@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+		<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+		<meta name="theme-color" content="#77c">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=no">
+		<meta http-equiv="Content-Language" content="zh-cn">
+		<meta name="keywords" content="Orep,Tool,OrepTool,选矿,矿物加工工程,在线计算,选矿计算工具,回收率计算,浓细度计算,浓度壶,选矿公式">
+		<meta name="description" content="OrepTool是选矿指标在线计算工具，选矿的必备工具之一，用于矿物加工中常用的公式计算，例如回收率、浓细度、药剂单耗等，可以简单、方便、快速、准确计算出结果。">
+		<title>浓度壶计算矿浆浓细度 - OrepTool</title>
+		<link rel="icon" href="/img/hopuc-logo2-22050501-fanal.svg" type="image/svg+xml">
+		<link rel="stylesheet" type="text/css" href="/css/header.css"/>
+		<link rel="stylesheet" type="text/css" href="css/main.css"/>
+		</head>
+	<body>
+		
+		<div id="app" v-cloak>
+			
+			<!-- <hopuc-header @switch-dark="isDark" ref="header"></hopuc-header> -->
+			<hopuc-header ref="header"></hopuc-header>
+			
+			<div class="main">
+				
+				<div class="content" id="calculation">
+					<h2>浓度壶计算矿浆浓细度</h2>
+					<div class="item-box">
+						<div class="item" v-show="!item.hide" v-for="(item,key) of items">
+							<span class="text" v-html="item.name+'·'+item.unit"></span>
+							<!-- <span class="text">{{item.value}}</span> -->
+							<input :class="!item.verification?'error ':item.output?'output':''" type="number" v-model.trim.number="item.value" placeholder="" @input="change(key)" @keyup.enter="calculate()">
+						</div>
+					</div>
+					<button class="btn" type="button" @click="calculate()">计算</button>
+					<button class="btn" type="button" @click="calculate();save()">保存</button>
+					<!-- <button class="btn" type="button" @click="clear()">清空</button> -->
+				</div>
+				
+				<div class="content" id="record">
+					<i class="dot" :title="status" :style="'background: '+status"></i>
+					<h2>浓细度记录</h2>
+					<div class="record-box">
+						<div class="record" v-show="item.record" v-for="(item,key) of items">
+							<div class="text" v-html="item.name+(item.unit?'/'+item.unit:'')"></div>
+							<div class="" :id="'record'+num" v-for="(record,num) of record">
+								<p class="text" :id="key+num">{{record[key]}}</p>
+							</div>
+						</div>
+					</div>
+					<!-- <div class="record-box" :id="'record'+num" v-for="(record,num) of record">
+						<div class="record" v-for="(value,key) of record">
+							<p class="text" :id="key+num">{{value}}</p>
+						</div>
+					</div> -->
+				</div>
+				
+			</div>
+			
+		</div>
+		
+		
+		<!-- <script src="https://cdn.jsdelivr.net/npm/vue@2.6.13/dist/vue.js"></script> -->
+		<script src="//cdn.staticfile.org/vue/2.6.14/vue.min.js"></script>
+		<script>window.Vue || document.write('<script src="/js/vue.min.js"><\/script>')</script>
+		<script src="/js/header.js"></script>
+		<script src="js/analytics.js"></script>
+		<script type="text/javascript">
+			var app = new Vue({
+				el:'#app',
+				data:{
+					items:{
+						date:{
+							name:'日期',
+							verification: true,
+							output: null,
+							value: null,
+							decimal: null,
+							unit: "",
+							sort: 1,
+							record: true,
+							hide: true,
+						},
+						time:{
+							name:'时间',
+							verification: true,
+							output: null,
+							value: null,
+							decimal: null,
+							unit: "",
+							sort: 2,
+							record: true,
+							hide: true,
+						},
+						density:{
+							name:'矿石比重',
+							verification: true,
+							output: null,
+							value: 3.36,
+							decimal: 2,
+							unit: "g/cm<sup>3</sup>",
+							sort: 0,
+							record: false,
+						},
+						pot_volume:{
+							name:'壶容积',
+							verification: true,
+							output: null,
+							value: 1035,
+							decimal: 3,
+							unit: "ml",
+							sort: 0,
+							record: false,
+						},
+						pot_quantity:{
+							name:'空壶重量',
+							verification: true,
+							output: null,
+							value: 0,
+							decimal: 2,
+							unit: "g",
+							sort: 0,
+							record: false,
+						},
+						pulp_quantity:{
+							name:'矿浆重量',
+							verification: true,
+							output: null,
+							value: null,
+							decimal: 2,
+							unit: "g",
+							sort: 0,
+							record: false,
+						},
+						sand_quantity:{
+							name:'矿砂重量',	
+							verification: true,
+							output: null,
+							value: null,
+							decimal: 3,
+							unit: "g",
+							sort: 0,
+							record: false,
+						},
+						concentration:{
+							name:'浓度',
+							verification: true,
+							output: null,
+							value: null,
+							decimal: 2,
+							unit: "%",
+							sort: 3,
+							record: true,
+						},
+						fineness:{
+							name:'细度',
+							verification: true,
+							output: null,
+							value: null,
+							decimal: 2,
+							unit: "%",
+							sort: 4,
+							record: true,
+						},
+					},
+					record:[],
+					status:'gray',
+				},
+				watch:{
+					// 'e.f': function (val, oldVal) { /* ... */ }
+				},
+				created:function(){
+					
+				},
+				mounted:function(){
+					this.get()
+					this.timer = setInterval(this.get, 5000)
+				},
+				methods:{
+					get:function(){
+						// fetch('data/concentration.json')
+						this.status = 'gray'
+						fetch('api/concentration.php')
+							.then(res => res.json())
+							.then(data => {
+								console.log(data)
+								// this.record.push(data.data)
+								this.record = JSON.parse(data.data)
+								this.status = 'limegreen'
+							})
+							.catch(err => {
+								this.status = 'red'
+								console.log('Get error:'+err)
+							})
+					},
+					calculate:function(){
+						let density = this.items.density.value
+						let pot_volume = this.items.pot_volume.value
+						let pot_quantity = this.items.pot_quantity.value
+						let pulp_quantity = this.items.pulp_quantity.value
+						let sand_quantity = this.items.sand_quantity.value
+						
+						
+						if(!!density && !!pot_volume && !!pulp_quantity){
+							concentration = (100*density*((pulp_quantity-pot_quantity)-pot_volume)/((pulp_quantity-pot_quantity)*(density-1))).toFixed(this.items.concentration.decimal)
+							if(concentration>0){
+								this.items.concentration.value = concentration
+								this.items.concentration.output = true
+							}
+							
+							if(!!sand_quantity){
+								let sand_concentration = (100*density*(sand_quantity-pot_quantity-pot_volume)/((sand_quantity-pot_quantity)*(density-1)))
+								// console.log(sand_concentration)
+								fineness = (100*(1-((sand_quantity-pot_quantity)*sand_concentration)/((pulp_quantity-pot_quantity)*this.items.concentration.value))).toFixed(this.items.fineness.decimal)
+								if(fineness>0){
+									this.items.fineness.value = fineness
+									this.items.fineness.output = true
+								}
+							}
+							this.date()
+							this.time()
+						}else{
+							console.log('error:Please enter the value!')
+						}
+						this.change('calculate')
+					},
+					change:function(e){
+						if(e == 'calculate'){
+							Object.keys(this.items).forEach(key => {
+								let value = this.items[key].value
+								console.log(key+(value!=null))
+								console.log(key+(value>=0))
+								if(value!=null&&value!=''||value>0||value==0){
+									this.items[key].verification = true
+								}else{
+									this.items[key].verification = false
+								}
+							})
+						}else{
+							let value = this.items[e].value
+							console.log(e,value)
+							console.log(value!='')
+							console.log(value>=0)
+							if(value!=null&&value!=''||value>0||value==0){
+								this.items[e].verification = true
+							}else{
+								this.items[e].verification = false
+							}
+							Object.keys(this.items).forEach(key => {
+								this.items[key].output = false
+							})
+						}
+					},
+					clear:function(){
+						// console.log(Object.keys(this.items))
+						Object.keys(this.items).forEach(key => {
+							this.items[key].value = null
+						})
+					},
+					date:function() {
+						var date = new Date();
+						date.setMinutes(date.getMinutes() - date.getTimezoneOffset()); // toJSON 的时区补偿
+						// this.items.time.value = date.toJSON().substr(0, 19).replace(/[T]/g, ' ');
+						this.items.date.value = date.toJSON().substr(5, 5).replace(/[T]/g, ' ');
+					},
+					time:function() {
+						var date = new Date();
+						date.setMinutes(date.getMinutes() - date.getTimezoneOffset()); // toJSON 的时区补偿
+						// this.items.time.value = date.toJSON().substr(0, 19).replace(/[T]/g, ' ');
+						this.items.time.value = date.toJSON().substr(11, 5).replace(/[T]/g, ' ');
+					},
+					save:function(){
+						// console.log(Object.keys(this.items))
+						record = {}
+						Object.keys(this.items).forEach(key => {
+							if(!!this.items[key].verification){
+								record[key] = this.items[key].value
+								console.log(Object.keys(record).length)
+								if(Object.keys(record).length == 9){
+									this.record.push(record)
+									this.update()
+									console.log(JSON.stringify(record))
+								}
+							}else{
+								console.log("error:" + key + this.items[key].value)
+							}
+							// this.record == record
+						})
+					},
+					update:function(){
+						this.status = 'gray'
+						fetch('api/concentration.php', {
+							method: 'POST',
+							headers: {
+								'Content-Type': 'application/x-www-form-urlencoded'
+							},
+							body: "data="+JSON.stringify(this.record)
+						})
+						.then(res => res.json())
+						.then(data => {
+							console.log(data)
+							this.status = 'limegreen'
+						})
+						.catch(err => {
+							this.status = 'red'
+							console.log('Update error:'+err)
+						})
+					},
+				},
+				beforeDestroy() {
+					clearInterval(this.timer)
+				}
+			})
+		</script>
+	</body>
+</html>

@@ -1,0 +1,146 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=no">
+		<meta name="keywords" content="Orep,Tool,OrepTool,选矿,矿物加工工程,在线计算,选矿计算工具,回收率计算,浓细度计算,浓度壶,选矿公式">
+		<meta name="description" content="OrepTool是选矿指标在线计算工具，选矿的必备工具之一，用于矿物加工中常用的公式计算，例如回收率、浓细度等，可以简单、方便、快速、准确计算出结果。">
+		<title>OrepTool</title>
+		<link rel="icon" href="/img/hopuc-logo2-22050501-fanal.svg" type="image/svg+xml">
+		<link rel="stylesheet" type="text/css" href="css/header.css" />
+		<!-- <link rel="stylesheet" type="text/css" href="css/main.css" /> -->
+		<style>
+			
+			* {
+				outline: 0;
+				box-sizing: border-box;
+				font-family: "Microsoft YaHei", "微软雅黑", "Arial", "SimHei", "黑体", sans-serif;
+			}
+			
+			html,body{
+				width: 100%;
+				height: 100%;
+				margin: 0;
+				background-color: #f8f8f8;
+			}
+		
+			#app {
+				/* text-align: center;
+				margin: 0 auto;
+				padding: 3% 0;
+				max-width: 1000px; */
+			}
+				
+			.container {
+				max-width: 1000px;
+				/* max-width: 80%; */
+				margin: 0 auto;
+				/* background-color: #f0f0f0; */
+				padding: 2%;
+				/* border-radius: 5px */
+			}
+			
+			.item-box {
+			    display: flex;
+			    /* flex-direction: row; */
+			    justify-content: center;
+			    flex-wrap: wrap;
+			}
+			
+			.item {
+			    position: relative;
+			    width: 240px;
+			    height: 120px;
+			    /* min-width: 33%; */
+			    max-width: 45%;
+			    /* min-height: 45%; */
+			    /* line-height: 60px; */
+			    color: #fff;
+			    /* border: 1.6px solid #333; */
+			    /* background: #159; */
+				/* background: linear-gradient(50deg, rgb(0, 0, 0) 0%, rgb(10, 60, 130) 0%, rgb(25, 30, 60) 100%); */
+			    background: linear-gradient(50deg, rgb(0, 10, 80) 0%, rgb(0, 60, 100) 0%, rgb(10, 100, 130) 100%);
+				border-radius: 8px;
+			    /* padding: 0 12px; */
+			    margin: 1%;
+			    cursor: pointer;
+			    box-shadow: 0 0 12px rgba(100, 100, 100, .12);
+			    transition: all .5s;
+			    user-select: none;
+			}
+			
+			.item:hover,
+			.item:focus {
+				color: #fff;
+				background: linear-gradient(50deg, rgb(10, 20, 90) 0%, rgb(0, 80, 120) 50%, rgb(20, 110, 150) 100%);
+				transition: all .5s;
+				/* fill: #fff; */
+				/* background: #fff; */
+				/* background: #77c; */
+				/* border: 1.6px solid #77c; */
+			}
+			
+			.item-name {
+				text-align: center;
+			    display: block;
+			    width: 100%;
+			    height: 120px;
+			    line-height: 120px;
+			    font-size: 22px;
+			    font-weight: 400;
+			    /* color: #333; */
+			    /* border: 1.6px solid #333; */
+			    /* padding: 0 12px; */
+			    margin: 0;
+			}
+    </style>
+	</head>
+	<body>
+		<div id="app" v-cloak>
+			<!-- <hopuc-header @switch-dark="isDark" ref="header"></hopuc-header> -->
+			<hopuc-header ref="header"></hopuc-header>
+			<div class="container">
+				<!-- <h1>Hopuc Tool</h1> -->
+				<!-- <p>更多功能了解，请访问<a href="https://www.hopuc.com" target="_blank">Hopuc官网(hopuc.com)</a></p> -->
+				<div class="item-box">
+					<div class="item" v-for="item of items" @click="go(item.url)">
+						<span class="item-name" :href="item.url">{{item.name}}</span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- <script src="https://cdn.jsdelivr.net/npm/vue@2.6.13/dist/vue.js"></script> -->
+		<script src="//cdn.staticfile.org/vue/2.6.14/vue.min.js"></script>
+		<script>window.Vue || document.write('<script src="/js/vue.min.js"><\/script>')</script>
+		<script src="js/header.js"></script>
+		<script src="js/analytics.js"></script>
+		<script type="text/javascript">
+			var app = new Vue({
+				el: '#app',
+				data: {
+					items: {
+						recovery:{
+							name:'计算回收率',
+							url:'work/recovery.html',
+						},
+						concentration:{
+							name:'计算浓细度',
+							url:'work/concentration.html',
+						}
+					},
+				},
+				created: function() {
+
+				},
+				mounted: function() {
+
+				},
+				methods: {
+					go: function(url){
+						window.location.href = url
+					}
+				},
+			})
+		</script>
+	</body>
+</html>

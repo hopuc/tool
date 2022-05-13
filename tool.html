@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" id="viewport" name="viewport">
+		<title>Hopuc Tools</title>
+		<style type="text/css">
+			* {
+				outline: 0;
+				box-sizing: border-box;
+			}
+
+			html {
+				margin: 0;
+				width: 100%;
+			}
+
+			body {
+				margin: 0;
+				font-family: "Segoe UI", Arial, "Microsoft Yahei", sans-serif;
+			}
+
+			textarea {
+				height: 60vh;
+				width: 40vw;
+				max-width: 550px;
+				border: 1px solid rgba(233, 233, 233, .8);
+				border-radius: 3px;
+				background-color: rgba(233, 233, 233, .8);
+				font-family: "Segoe UI", Arial, "Microsoft Yahei", sans-serif;
+				padding: 6px;
+				margin-bottom: 4px;
+				resize: none;
+				//margin: 1vw;
+			}
+
+			textarea:hover,
+			textarea:focus {
+				//border: 1px solid #28a;
+				outline: none;
+			}
+
+			textarea::-webkit-scrollbar {
+				width: 4px;
+				height: 4px;
+			}
+
+			textarea::-webkit-scrollbar-track {
+				background: #f6f6f6;
+				border-radius: 2px;
+			}
+
+			textarea::-webkit-scrollbar-thumb {
+				background: #aaa;
+				border-radius: 2px;
+			}
+
+			textarea::-webkit-scrollbar-thumb:hover {
+				background: #747474;
+			}
+
+			textarea::-webkit-scrollbar-corner {
+				background: #f6f6f6;
+			}
+
+			input[type=button],
+			select {
+				color: #888;
+				background: #fff;
+				border: 1px solid #888;
+				border-radius: 5px;
+				padding: 3px 8px;
+				margin: 2px 6px 3px 0;
+			}
+
+			input[type=button]:hover {
+				color: #28a;
+				border: 1px solid #28a;
+				background: #fff;
+				outline: none;
+			}
+
+			input[type=button]:active,
+			input[type=button]:focus {
+				color: #fff;
+				border: 1px solid #28a;
+				background: #28a;
+				outline: none;
+			}
+
+			.headerbox {
+				height: 50px;
+			}
+
+			.header {
+				width: 100%;
+				height: 50px;
+				background: #7c9;
+				background: linear-gradient(rgba(90, 180, 120, 1), rgba(80, 170, 110, .8));
+				margin-bottom: 10px;
+				position: fixed;
+				z-index: 1;
+				box-shadow: 0 0 3px #666;
+			}
+
+			.upload {
+				padding: 1vw;
+				text-align: center;
+			}
+
+			.logo {
+				width: 50px;
+				height: 50px;
+				padding-left: 6vw;
+				float: left;
+			}
+
+			.logo-svg {
+				margin: 5px;
+			}
+
+			.nav {
+				float: right;
+				padding-right: 8vw;
+				//width: 40vw;
+			}
+
+			.nav button {
+				color: #ddd;
+				background: rgba(30, 30, 30, .1);
+				width: 80px;
+				height: 50px;
+				line-height: 50px;
+				font-size: 18px;
+				padding: 0 18px;
+				border: 0;
+				display: none;
+				text-align: center;
+				//text-decoration: none;
+				//white-space: nowrap;
+
+			}
+
+			.nav button:hover {
+				border-color: transparent;
+				background: rgba(30, 30, 30, .3);
+			}
+
+			.nav button:focus {
+				outline: none;
+			}
+
+			.nav button i {}
+
+			.menu-svg {
+				margin: 13px auto;
+			}
+
+			.nav ul {
+				display: block;
+				list-style: none;
+				margin: 0;
+				padding: 0;
+			}
+
+			.nav ul li {
+				height: 50px;
+				width: 80px;
+				display: inline-block;
+			}
+
+			.nav ul li a {
+				color: #fff;
+				//background: rgba(0, 0, 0, .2);
+				height: 50px;
+				line-height: 50px;
+				font-size: 18px;
+				padding: 0 18px;
+				display: inline-block;
+				text-align: center;
+				text-decoration: none;
+				white-space: nowrap;
+				position: relative;
+			}
+
+			.nav ul li a:hover {
+				//border-bottom: 2px solid #ddd;
+				background: rgba(20, 20, 20, .1);
+				background: linear-gradient(to bottom, rgba(0, 0, 0, .1), rgba(0, 0, 0, .2));
+			}
+
+			.main {
+				display: flex;
+				justify-content: center;
+				align-items: ;
+			}
+
+			.left,
+			.right {
+				padding: 1vw;
+			}
+
+			.center {
+				text-align: center;
+				padding-top: 1vw;
+			}
+
+			@media screen and (max-width: 540px) {
+
+				textarea {
+					height: 50vh;
+					width: 35vw;
+				}
+
+				.nav {
+					//display: none;
+				}
+
+				.nav button {
+					display: block;
+				}
+
+				.nav ul {
+					display: none;
+				}
+
+				.nav ul li {
+					display: block;
+				}
+
+				.nav ul li a {
+					display: block;
+					background: rgba(90, 180, 120, .8);
+				}
+
+				.nav ul li a:hover {
+					color: rgba(90, 180, 120, .8);
+					background: rgba(250, 250, 250, .8);
+					border: 0;
+				}
+
+			}
+		</style>
+	</head>
+	<body>
+
+		<div class="headerbox">
+			<div class="header">
+				<div class="logo">
+					<a href="/" class="" title="HOPUC">
+						<svg version="1.1" id="logo" class="logo-svg" width="40px" height="40px" xmlns="http://www.w3.org/2000/svg"
+						 xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 500 500" style="enable-background:new 0 0 500 500;"
+						 xml:space="preserve">
+							<g id="logo-ai" fill="#fff">
+								<g id="LWPOLYLINE_8_">
+									<polygon points="462.9,48.5 215.2,334.2 393,444.2"></polygon>
+								</g>
+								<g id="LWPOLYLINE_7_">
+									<polygon points="254.5,399.9 204.6,369 216.2,461.8"></polygon>
+								</g>
+								<g id="LWPOLYLINE_6_">
+									<polygon points="462.9,48.5 31.5,220.5 182.8,314.1"></polygon>
+								</g>
+							</g>
+						</svg>
+					</a>
+				</div>
+				<div class="nav">
+					<button id="btn" onclick="menu()">
+						<i class="">
+							<svg xmlns="http://www.w3.org/2000/svg" class="menu-svg" width="24" height="24" viewBox="0 0 24 24" fill="#fff">
+								<path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"></path>
+							</svg>
+						</i>
+					</button>
+					<ul id="menu">
+						<li>
+							<a href="index.html">主页</a>
+						</li>
+						<!-- <li>
+							<a href="explore.html">发现</a>
+						</li> -->
+						<li>
+							<a href="#" id="tocontact">联系</a>
+						</li>
+						<li>
+							<a href="#" id="toabout">关于</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		
+
+		<div class="main">
+			
+		</div>
+
+		<script>
+			function menu() {
+				var e = document.getElementById("menu");
+				//console.log(e.style.display);
+				if (e.style.display == "none" || e.style.display == "") {
+					e.style.display = "block"
+				} else if (e.style.display == "block") {
+					e.style.display = "none"
+				}
+			}
+		</script>
+	</body>
+</html>

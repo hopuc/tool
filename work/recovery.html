@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+		<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+		<meta name="theme-color" content="#77c">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=no">
+		<meta name="keywords" content="Orep,Tool,OrepTool,选矿,矿物加工工程,在线计算,选矿计算工具,回收率计算,浓细度计算,浓度壶,选矿公式">
+		<meta name="description" content="OrepTool是选矿指标在线计算工具，选矿的必备工具之一，用于矿物加工中常用的公式计算，例如回收率、浓细度、药剂单耗等，可以简单、方便、快速、准确计算出结果。">
+		<title>计算选矿回收率 - OrepTool</title>
+		<link rel="icon" href="/img/hopuc-logo2-22050501-fanal.svg" type="image/svg+xml">
+		<link rel="stylesheet" type="text/css" href="/css/header.css"/>
+		<link rel="stylesheet" type="text/css" href="css/main.css"/>
+	</head>
+	<body>
+		
+		<div id="app" v-cloak>
+			
+			<!-- <hopuc-header @switch-dark="isDark" ref="header"></hopuc-header> -->
+			<hopuc-header ref="header"></hopuc-header>
+			
+			<div class="main">
+				<div class="content" id="calculation">
+					<h2>计算选矿回收率</h2>
+					<div class="item-box">
+						<div class="item" v-for="(item,key) of items">
+							<span class="text" v-html="item.name+'·'+item.unit"></span>
+							<input :class="!item.verification?'error ':item.output?'output':''" type="number" v-model.trim.number="item.value" placeholder="" @input="change(key)" @keyup.enter="calculate();change('calculate');">
+						</div>
+						<!-- <div class="item">
+							<span class="text">原矿品位</span>
+							<input :class="raw!==''&&(raw<=0||raw>=100)?'error':''" type="number" v-model.number="raw" aplaceholder="原矿品位" @input="" @keyup.enter="calculate()">
+						</div>
+						
+						<div class="item">
+							<span class="text">精矿品位</span>
+							<input :class="concentrate!==''&&(concentrate<=0||concentrate>=100||concentrate<=raw)?'error':''" type="number" v-model.number="concentrate" aplaceholder="精矿品位" @input="" @keyup.enter="calculate()">
+						</div>
+						
+						<div class="item">
+							<span class="text">尾矿品位</span>
+							<input :class="tailings!==''&&(tailings<=0||tailings>=100||(tailings>=raw&&raw!==''))?'error':''" type="number" v-model.number="tailings" aplaceholder="尾矿品位" @input="" @keyup.enter="calculate()">
+						</div>
+						
+						<div class="item">
+							<span class="text">回收率</span>
+							<input :class="recovery!==''&&(recovery<=0||recovery>=100)?'error':''" type="number" v-model.number="recovery" aplaceholder="回收率" @input="" @keyup.enter="calculate()">
+						</div> -->
+					</div>
+					<button class="btn" type="button" @click="calculate();change('calculate');">计算</button>
+					<button class="btn" type="button" @click="clear()">清空</button>
+				</div>
+			</div>
+			
+		</div>
+		
+		
+		<!-- <script src="https://cdn.jsdelivr.net/npm/vue@2.6.13/dist/vue.js"></script> -->
+		<script src="//cdn.staticfile.org/vue/2.6.14/vue.min.js"></script>
+		<script>window.Vue || document.write('<script src="/js/vue.min.js"><\/script>')</script>
+		<script src="/js/header.js"></script>
+		<script src="js/analytics.js"></script>
+		<script type="text/javascript">
+			var app = new Vue({
+				el:'#app',
+				data:{
+					/* raw:'',
+					concentrate:'',
+					tailings:'',
+					recovery:'', */
+					items:{
+						raw:{
+							name:'原矿品位',
+							verification: true,
+							output: false,
+							value: null,
+							decimal: 3,
+							unit: "%",
+							hide:false,
+						},
+						concentrate:{
+							name:'精矿品位',
+							verification: true,
+							output: false,
+							value: null,
+							decimal: 2,
+							unit: "%",
+							hide:false,
+						},
+						tailings:{
+							name:'尾矿品位',	
+							verification: true,
+							output: false,
+							value: null,
+							decimal: 3,
+							unit: "%",
+							hide:false,
+						},
+						recovery:{
+							name:'回收率',
+							verification: true,
+							output: false,
+							value: null,
+							decimal: 2,
+							unit: "%",
+							hide:false,
+						},
+						concentrate_productivity:{
+							name:'精矿产率',
+							verification: true,
+							output: false,
+							value: null,
+							decimal: 2,
+							unit: "%",
+							hide:false,
+						},
+					}
+				},
+				watch:{
+					// 'e.f': function (val, oldVal) { /* ... */ }
+				},
+				created:function(){
+					
+				},
+				mounted:function(){
+					
+				},
+				methods:{
+					calculate:function(){
+						let raw = this.items.raw.value
+						let concentrate = this.items.concentrate.value
+						let tailings = this.items.tailings.value
+						let recovery = this.items.recovery.value
+						let concentrate_productivity = this.items.concentrate_productivity.value
+						
+						Object.keys(this.items).forEach(key => {
+							this.items[key].output = false
+						})
+						
+						if(!!raw && !!concentrate && !!tailings && !!recovery){
+							recovery = (100*concentrate*(raw-tailings)/(raw*(concentrate-tailings))).toFixed(4)
+							if(recovery>0){
+								this.items.recovery.value = Number(recovery)
+								this.items.recovery.output = true
+							}
+							console.log('recovery',recovery,0)
+						}else if(!!raw && !!concentrate && !!tailings){
+							console.log(1)
+							recovery = (100*concentrate*(raw-tailings)/(raw*(concentrate-tailings))).toFixed(4)
+							if(recovery>0){
+								this.items.recovery.value = Number(recovery)
+								this.items.recovery.output = true
+							}
+						}else if(!!raw && !!concentrate && !!recovery){
+							console.log(2)
+							tailings = (concentrate*raw*(recovery/100-1)/(raw*recovery/100-concentrate)).toFixed(4)
+							if(tailings>0){
+								this.items.tailings.value = Number(tailings)
+								this.items.tailings.output = true
+							}
+						}else if(!!raw && !!recovery && !!tailings){
+							console.log(3)
+							concentrate = ((raw*tailings*recovery/100)/(raw*recovery/100+tailings-raw)).toFixed(4)
+							if(concentrate>0){
+								this.items.concentrate.value = Number(concentrate)
+								this.items.concentrate.output = true
+							}
+						}else if(!!recovery && !!concentrate && !!tailings){
+							console.log(4)
+							raw = ((concentrate*tailings)/(tailings*recovery/100-concentrate*recovery/100+concentrate)).toFixed(4)
+							if(raw>0){
+								this.items.raw.value  = Number(raw)
+								this.items.raw.output = true
+							}
+						}else{
+							console.log('error:Please enter the value!')
+						}
+						
+						if(!!recovery){
+							console.log(9)
+							concentrate_productivity = ((raw*recovery)/concentrate).toFixed(4)
+							if(concentrate_productivity>0){
+								this.items.concentrate_productivity.value  = Number(concentrate_productivity)
+								this.items.concentrate_productivity.output = true
+							}
+						}
+						/* this.items.raw.value = raw
+						this.items.concentrate.value = concentrate
+						this.items.tailings.value = tailings
+						this.items.recovery.value = recovery */
+					},
+					change:function(e){
+						if(e == 'calculate'){
+							Object.keys(this.items).forEach(key => {
+								let value = this.items[key].value
+								if(value==''||(value<=0||value>=100)){
+									this.items[key].verification = false
+								}else{
+									this.items[key].verification = true
+								}
+							})
+						}else{
+							let value = this.items[e].value
+							console.log(e,value)
+							if(value==''||(value<=0||value>=100)){
+								this.items[e].verification = false
+							}else{
+								this.items[e].verification = true
+							}
+							Object.keys(this.items).forEach(key => {
+								this.items[key].output = false
+							})
+						}
+					},
+					clear:function(){
+						// console.log(Object.keys(this.items))
+						Object.keys(this.items).forEach(key => {
+							this.items[key].value = null
+						})
+					}
+				},
+			})
+		</script>
+	</body>
+</html>
