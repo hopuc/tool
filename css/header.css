@@ -1,20 +1,21 @@
 :root {
 	--theme-color: #77c;
 	--theme-color-opacity: rgba(119, 119, 204, .5);
-	--main-bg-color: rgb(250,250,250);
+	--main-bg-color: rgba(250,250,250,.8);
 	--black-0-color: #000;
 	--black-3-color: #333;
 	--black-5-color: #555;
 	--black-7-color: #777;
 	--white-f-color: #fff;
-	--white-e-color: #eee;
+	/* --white-e-color: #eee; */
+	--white-e-color: #e8e8e8;
 	--white-d-color: #ddd;
 }
 
 @media (prefers-color-scheme: dark) {
 	body {
 		--theme-color: #99c;
-		--main-bg-color: #333;
+		--main-bg-color: rgba(30,30,30,.8);
 		--black-0-color: #fff;
 		--black-3-color: #ccc;
 		--black-5-color: #aaa;
@@ -31,7 +32,7 @@
 
 .dark{
 	--theme-color: #99c;
-	--main-bg-color: #333;
+	--main-bg-color: rgba(30,30,30,.8);
 	--black-0-color: #fff;
 	--black-3-color: #ccc;
 	--black-5-color: #aaa;
@@ -43,13 +44,15 @@
 
 .light{
 	--theme-color: #77c;
-	--main-bg-color: rgb(250,250,250);
+	--main-bg-color: rgba(250,250,250,.8);
 	--black-0-color: #000;
 	--black-3-color: #333;
 	--black-5-color: #555;
 	--black-7-color: #777;
 	--white-f-color: #fff;
-	--white-e-color: #eee;
+	/* --white-e-color: #eee; */
+	--white-e-color: #e8e8e8;
+	--white-d-color: #ddd;
 }
 
 [v-cloak] {
@@ -95,7 +98,7 @@ html,
 body {
 	width: 100%;
 	margin: 0;
-	/* background: rgb(250,250,250); */
+	/* background: rgba(250,250,250,.8); */
 	background: var(--main-bg-color);
 }
 
@@ -351,7 +354,7 @@ header {
 		position: absolute;
 		/* grid-template-columns: auto auto; */
 		/* background: #eee; */
-		background: var(--white-d-color);
+		background: var(--white-f-color);
 		width: 180px;
 		max-width: 96vw;
 		height: auto;

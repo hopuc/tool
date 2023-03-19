@@ -13,6 +13,7 @@ body {
 }
 
 h2 {
+	color: var(--black-3-color);
 	display: block;
 	font-size: 1.5em;
 	margin: 6px 0;
@@ -50,7 +51,8 @@ h2 {
 }
 
 .content{
-	background: #fff;
+	/* background: #fff; */
+	background: var(--white-f-color);
 	margin: 20px 10px 20px 10px;
 	padding: 20px 30px;
 	border-radius: 12px;
@@ -71,7 +73,8 @@ h2 {
 .item-box .text{
 	margin: 6px 0;
 	display: block;
-	color: #555;
+	/* color: #555; */
+	color: var(--black-5-color);
 	line-height: 20px;
 	height: 20px;
 	font-size: 14px;
@@ -89,8 +92,9 @@ h2 {
 	/* width: calc(100%-75px); */
 	width: 100%;
 	/* max-width: 320px; */
-	color: #555;
-	/* background: rgba(220, 220, 220, .1); */
+	/* color: #555; */
+	color: var(--black-5-color);
+	background: rgba(220, 220, 220, .1);
 	height: 36px;
 	/* border: 0; */
 	/* border-bottom: 1.8px solid #555; */
@@ -114,7 +118,7 @@ h2 {
 .item-box input:focus{
 	border: 1.8px solid #77c;
 	/* box-shadow: 0 0 0 3px rgba(119, 119, 204, .3); */
-	box-shadow: 0 0 0 3px rgba(220, 220, 220, .3);
+	box-shadow: 0 0 0 3px rgba(220, 220, 220, .4);
 }
 
 .error{
@@ -129,7 +133,8 @@ h2 {
 	outline: none;
 	color: #77c;
 	border: 1.8px solid #77c;
-	background: #fff;
+	/* background: #fff; */
+	background: var(--white-f-color);
 	/* color: #555;
 	background: rgba(220, 220, 220, .1); */
 	width: 90px;
@@ -147,16 +152,16 @@ h2 {
 	user-select: none;
 }
 
-.btn:hover,.btn:focus {
-	color: #fff;
+/* .btn:hover,.btn:focus {
+	color: var(--white-f-color);
 	border: 1.8px solid #77c;
 	background: #77c;
 	box-shadow: 0 0 5px rgba(100, 100, 100, .2);
-}
+} */
 
 .btn:active {
 	border: 1.8px solid #77c;
-	color: #fff;
+	color: var(--white-f-color);
 	background: rgba(220, 220, 220, .1);
 	box-shadow: 0 0 0 3px rgba(119, 119, 204, .3);
 	background: #77c;
@@ -181,7 +186,8 @@ h2 {
 	border: 1px solid #eee;
 	border-radius: 2px;
 	display: block;
-	color: #555;
+	/* color: #555; */
+	color: var(--black-5-color);
 	line-height: 20px;
 	height: 20px;
 	font-size: 14px;

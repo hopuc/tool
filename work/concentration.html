@@ -10,16 +10,17 @@
 		<meta name="keywords" content="Orep,Tool,OrepTool,选矿,矿物加工工程,在线计算,选矿计算工具,回收率计算,浓细度计算,浓度壶,选矿公式">
 		<meta name="description" content="OrepTool是选矿指标在线计算工具，选矿的必备工具之一，用于矿物加工中常用的公式计算，例如回收率、浓细度、药剂单耗等，可以简单、方便、快速、准确计算出结果。">
 		<title>浓度壶计算矿浆浓细度 - OrepTool</title>
-		<link rel="icon" href="/img/hopuc-logo2-22050501-fanal.svg" type="image/svg+xml">
-		<link rel="stylesheet" type="text/css" href="/css/header.css"/>
+		<link rel="icon" href="../img/hopuc-logo2-22050501-final.svg" type="image/svg+xml">
+		<link rel="stylesheet" type="text/css" href="../css/header.css"/>
 		<link rel="stylesheet" type="text/css" href="css/main.css"/>
 		</head>
 	<body>
 		
-		<div id="app" v-cloak>
+		<!-- <div id="app" v-cloak> -->
+		<div id="app" :class="dark?'dark':'light'" v-cloak>
 			
-			<!-- <hopuc-header @switch-dark="isDark" ref="header"></hopuc-header> -->
-			<hopuc-header ref="header"></hopuc-header>
+			<hopuc-header @switch-dark="isDark" ref="header"></hopuc-header>
+			<!-- <hopuc-header ref="header"></hopuc-header> -->
 			
 			<div class="main">
 				
@@ -27,7 +28,7 @@
 					<h2>浓度壶计算矿浆浓细度</h2>
 					<div class="item-box">
 						<div class="item" v-show="!item.hide" v-for="(item,key) of items">
-							<span class="text" v-html="item.name+'·'+item.unit"></span>
+							<span class="text" v-html="(!language?item.name:key.replace('_',' ').toUpperCase())+(item.unit?'·'+item.unit:'')"></span>
 							<!-- <span class="text">{{item.value}}</span> -->
 							<input :class="!item.verification?'error ':item.output?'output':''" type="number" v-model.trim.number="item.value" placeholder="" @input="change(key)" @keyup.enter="calculate()">
 						</div>
@@ -42,7 +43,7 @@
 					<h2>浓细度记录</h2>
 					<div class="record-box">
 						<div class="record" v-show="item.record" v-for="(item,key) of items">
-							<div class="text" v-html="item.name+(item.unit?'/'+item.unit:'')"></div>
+							<div class="text" v-html="(!language?item.name:key.replace('_',' ').toUpperCase())+(item.unit?'·'+item.unit:'')"></div>
 							<div class="" :id="'record'+num" v-for="(record,num) of record">
 								<p class="text" :id="key+num">{{record[key]}}</p>
 							</div>
@@ -61,9 +62,9 @@
 		
 		
 		<!-- <script src="https://cdn.jsdelivr.net/npm/vue@2.6.13/dist/vue.js"></script> -->
-		<script src="//cdn.staticfile.org/vue/2.6.14/vue.min.js"></script>
-		<script>window.Vue || document.write('<script src="/js/vue.min.js"><\/script>')</script>
-		<script src="/js/header.js"></script>
+		<script src="//cdn.staticfile.org/vue/2.7.14/vue.min.js"></script>
+		<script>window.Vue || document.write('<script src="../js/vue.min.js"><\/script>')</script>
+		<script src="../js/header.js"></script>
 		<script src="js/analytics.js"></script>
 		<script type="text/javascript">
 			var app = new Vue({
@@ -96,7 +97,8 @@
 							name:'矿石比重',
 							verification: true,
 							output: null,
-							value: 3.36,
+							// value: 3.36,
+							value: 2.37,
 							decimal: 2,
 							unit: "g/cm<sup>3</sup>",
 							sort: 0,
@@ -106,7 +108,8 @@
 							name:'壶容积',
 							verification: true,
 							output: null,
-							value: 1035,
+							// value: 1035,
+							value: 1000,
 							decimal: 3,
 							unit: "ml",
 							sort: 0,
@@ -165,6 +168,8 @@
 					},
 					record:[],
 					status:'gray',
+					dark: false,
+					language: false,
 				},
 				watch:{
 					// 'e.f': function (val, oldVal) { /* ... */ }
@@ -175,6 +180,8 @@
 				mounted:function(){
 					this.get()
 					this.timer = setInterval(this.get, 5000)
+					this.dark = this.$refs.header.dark
+					this.language = this.$refs.header.language
 				},
 				methods:{
 					get:function(){
@@ -306,6 +313,10 @@
 							this.status = 'red'
 							console.log('Update error:'+err)
 						})
+					},
+					isDark: function (data) {
+						this.dark = data;
+						console.log('dark: ' + data);
 					},
 				},
 				beforeDestroy() {

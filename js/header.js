@@ -42,7 +42,7 @@ Vue.component('hopuc-header', {
 		return {
 			q: '',
 			menus:[
-					{
+					/* {
 						id: "user",
 						name:"我的",
 						img:"img/user.svg",
@@ -66,14 +66,20 @@ Vue.component('hopuc-header', {
 						id: "about",
 						name:"关于",
 						img:"img/setting.svg",
-					},
-					/* {
+					}, */
+					{
+						id: "language",
+						name:"英语",
+						img:"img/setting.svg",
+						switch: true,
+					}, 
+					{
 						id: "dark",
 						name:"暗黑模式",
 						img:"img/dark.svg",
 						switch: true,
 					},
-					{
+					/* {
 						id: "safe",
 						name:"安全模式",
 						img:"img/safe.svg",
@@ -84,15 +90,22 @@ Vue.component('hopuc-header', {
 				safe: true,
 				dark: false,
 				mobile: true,
+				language: false,
 		}
 	},
 	created:function(){
 		var safe = this.getParameter("safe");
+		var language = this.getParameter("language");
 		var dark = this.getParameter("dark");
 		if(safe == '0'||safe == 'false'||localStorage.getItem('safe') == 'false'){
 		// 	this.safe = true;
 		// }else{
 			this.safe = false;
+		}
+		if(language == '1'||language == 'true'||localStorage.getItem('language') == 'true'){
+			this.language = true;
+		}else{
+			this.language = false;
 		}
 		if(dark == '1'||localStorage.getItem('dark') == 'true'||window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches){
 			this.dark = true;
@@ -106,6 +119,8 @@ Vue.component('hopuc-header', {
 			if (e == 83) {
 				//e.preventDefault();
 				this.switchSafe();
+			}else if(e == 69){
+				this.switchLanguage();
 			}else if(e == 68){
 				this.switchDark();
 			}
@@ -141,6 +156,12 @@ Vue.component('hopuc-header', {
 			localStorage.setItem('safe', this.safe);
 			console.log('safe mode: ',this.safe);
 		},
+		switchLanguage:function (){
+			this.language?this.language=false:this.language=true;
+			localStorage.setItem('language', this.language);
+			console.log('language mode: ',this.language);
+			location.reload();
+		},
 		switchDark:function (){
 			// this.dark?this.dark=false:this.dark=true;
 			if(this.dark){
@@ -174,6 +195,8 @@ Vue.component('hopuc-header', {
 				this.switchSafe()
 			}else if(e == 'dark'){
 				this.switchDark()
+			}else if(e == 'language'){
+				this.switchLanguage()
 			}
 			console.log('setting: ',e)
 		},
@@ -181,6 +204,9 @@ Vue.component('hopuc-header', {
 			if(e == 'safe'){
 				return this.safe&&this.safe!=='false';
 				console.log('safe mode: ',safe&&safe!=='false');
+			}else if(e == 'language'){
+				return this.language&&this.language!=='false'
+				console.log('language mode: ',this.language);
 			}else if(e == 'dark'){
 				return this.dark&&this.dark!=='false'
 				console.log('dark mode: ',this.dark);
