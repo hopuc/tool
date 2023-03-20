@@ -18,15 +18,15 @@
 		<!-- <div id="app" v-cloak> -->
 		<div id="app" :class="dark?'dark':'light'" v-cloak>
 			
-			<hopuc-header @switch-dark="isDark" ref="header"></hopuc-header>
+			<hopuc-header @switch-dark="isDark" @switch-language="isLanguage" ref="header"></hopuc-header>
 			<!-- <hopuc-header ref="header"></hopuc-header> -->
 			
 			<div class="main">
 				<div class="content" id="calculation">
-					<h2>计算选矿回收率</h2>
+					<h2 v-html="language?'Calculate Recovery':'计算回收率'"></h2>
 					<div class="item-box">
 						<div class="item" v-for="(item,key) of items">
-							<span class="text" v-html="item.name+'·'+item.unit"></span>
+							<span class="text" v-html="(!language?item.name:key.replace('_',' ').toUpperCase())+(item.unit?'·'+item.unit:'')"></span>
 							<input :class="!item.verification?'error ':item.output?'output':''" type="number" v-model.trim.number="item.value" placeholder="" @input="change(key)" @keyup.enter="calculate();change('calculate');">
 						</div>
 						<!-- <div class="item">
@@ -49,8 +49,8 @@
 							<input :class="recovery!==''&&(recovery<=0||recovery>=100)?'error':''" type="number" v-model.number="recovery" aplaceholder="回收率" @input="" @keyup.enter="calculate()">
 						</div> -->
 					</div>
-					<button class="btn" type="button" @click="calculate();change('calculate');">计算</button>
-					<button class="btn" type="button" @click="clear()">清空</button>
+					<button class="btn" type="button" @click="calculate();change('calculate');">{{language?'Calculate':'计算'}}</button>
+					<button class="btn" type="button" @click="clear()">{{language?'Clear':'清空'}}</button>
 				</div>
 			</div>
 			
@@ -118,6 +118,7 @@
 						},
 					},
 					dark: false,
+					language: false,
 				},
 				watch:{
 					// 'e.f': function (val, oldVal) { /* ... */ }
@@ -127,6 +128,7 @@
 				},
 				mounted:function(){
 					this.dark = this.$refs.header.dark
+					this.language = this.$refs.header.language
 				},
 				methods:{
 					calculate:function(){
@@ -224,6 +226,10 @@
 					isDark: function (data) {
 						this.dark = data;
 						console.log('dark: ' + data);
+					},
+					isLanguage: function (data) {
+						this.language = data;
+						console.log('language: ' + data)
 					},
 				},
 			})

@@ -19,13 +19,13 @@
 		<!-- <div id="app" v-cloak> -->
 		<div id="app" :class="dark?'dark':'light'" v-cloak>
 			
-			<hopuc-header @switch-dark="isDark" ref="header"></hopuc-header>
+			<hopuc-header @switch-dark="isDark" @switch-language="isLanguage" ref="header"></hopuc-header>
 			<!-- <hopuc-header ref="header"></hopuc-header> -->
 			
 			<div class="main">
 				
 				<div class="content" id="calculation">
-					<h2>浓度壶计算矿浆浓细度</h2>
+					<h2 v-html="language?'Calculate Concentration and Fineness':'浓度壶计算矿浆浓细度'"></h2>
 					<div class="item-box">
 						<div class="item" v-show="!item.hide" v-for="(item,key) of items">
 							<span class="text" v-html="(!language?item.name:key.replace('_',' ').toUpperCase())+(item.unit?'·'+item.unit:'')"></span>
@@ -33,14 +33,14 @@
 							<input :class="!item.verification?'error ':item.output?'output':''" type="number" v-model.trim.number="item.value" placeholder="" @input="change(key)" @keyup.enter="calculate()">
 						</div>
 					</div>
-					<button class="btn" type="button" @click="calculate()">计算</button>
-					<button class="btn" type="button" @click="calculate();save()">保存</button>
+					<button class="btn" type="button" @click="calculate()">{{language?'C	alculate':'计算'}}</button>
+					<button class="btn" type="button" @click="calculate();save()">{{language?'Save':'保存'}}</button>
 					<!-- <button class="btn" type="button" @click="clear()">清空</button> -->
 				</div>
 				
 				<div class="content" id="record">
 					<i class="dot" :title="status" :style="'background: '+status"></i>
-					<h2>浓细度记录</h2>
+					<h2 v-html="language?'Record':'浓细度记录'"></h2>
 					<div class="record-box">
 						<div class="record" v-show="item.record" v-for="(item,key) of items">
 							<div class="text" v-html="(!language?item.name:key.replace('_',' ').toUpperCase())+(item.unit?'·'+item.unit:'')"></div>
@@ -62,7 +62,8 @@
 		
 		
 		<!-- <script src="https://cdn.jsdelivr.net/npm/vue@2.6.13/dist/vue.js"></script> -->
-		<script src="//cdn.staticfile.org/vue/2.7.14/vue.min.js"></script>
+		<!-- <script src="//cdn.staticfile.org/vue/2.7.14/vue.min.js"></script> -->
+		<script src="//cdn.staticfile.org/vue/2.7.14/vue.js"></script>
 		<script>window.Vue || document.write('<script src="../js/vue.min.js"><\/script>')</script>
 		<script src="../js/header.js"></script>
 		<script src="js/analytics.js"></script>
@@ -168,6 +169,7 @@
 					},
 					record:[],
 					status:'gray',
+					refresh:true,
 					dark: false,
 					language: false,
 				},
@@ -179,7 +181,7 @@
 				},
 				mounted:function(){
 					this.get()
-					this.timer = setInterval(this.get, 5000)
+					this.timer = setInterval(this.get, 10000)
 					this.dark = this.$refs.header.dark
 					this.language = this.$refs.header.language
 				},
@@ -317,6 +319,10 @@
 					isDark: function (data) {
 						this.dark = data;
 						console.log('dark: ' + data);
+					},
+					isLanguage: function (data) {
+						this.language = data;
+						console.log('language: ' + data)
 					},
 				},
 				beforeDestroy() {

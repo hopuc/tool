@@ -81,11 +81,13 @@
 			}
 			
 			.item-name {
+    			display: flex;
 				text-align: center;
-			    display: block;
+				align-items: center;
+   			 	justify-content: center;
 			    width: 100%;
 			    height: 120px;
-			    line-height: 120px;
+			    /* line-height: 120px; */
 			    font-size: 22px;
 			    font-weight: 400;
 			    /* color: #333; */
@@ -93,25 +95,26 @@
 			    /* padding: 0 12px; */
 			    margin: 0;
 			}
-    </style>
+		</style>
 	</head>
 	<body>
 		<!-- <div id="app" v-cloak> -->
 		<div id="app" :class="dark?'dark':'light'" v-cloak>
-			<hopuc-header @switch-dark="isDark" ref="header"></hopuc-header>
+			<hopuc-header @switch-dark="isDark" @switch-language="isLanguage" ref="header"></hopuc-header>
 			<!-- <hopuc-header ref="header"></hopuc-header> -->
 			<div class="container">
 				<!-- <h1>Hopuc Tool</h1> -->
 				<!-- <p>更多功能了解，请访问<a href="https://www.hopuc.com" target="_blank">Hopuc官网(hopuc.com)</a></p> -->
 				<div class="item-box">
 					<div class="item" v-for="item of items" @click="go(item.url)">
-						<span class="item-name" :href="item.url">{{item.name}}</span>
+						<span class="item-name" :href="item.url">{{language?item.en:item.name}}</span>
 					</div>
 				</div>
 			</div>
 		</div>
 		<!-- <script src="https://cdn.jsdelivr.net/npm/vue@2.6.13/dist/vue.js"></script> -->
-		<script src="//cdn.staticfile.org/vue/2.7.14/vue.min.js"></script>
+		<!-- <script src="//cdn.staticfile.org/vue/2.7.14/vue.min.js"></script> -->
+		<script src="//cdn.staticfile.org/vue/2.7.14/vue.js"></script>
 		<script>window.Vue || document.write('<script src="js/vue.min.js"><\/script>')</script>
 		<script src="js/header.js"></script>
 		<script src="js/analytics.js"></script>
@@ -122,20 +125,24 @@
 					items: {
 						recovery:{
 							name:'计算回收率',
+							en:'Recovery',
 							url:'work/recovery.html',
 						},
 						concentration:{
 							name:'计算浓细度',
+							en:'Concentration Fineness',
 							url:'work/concentration.html',
 						}
 					},
 					dark: false,
+					language: false,
 				},
 				created: function() {
 
 				},
 				mounted: function() {
 					this.dark = this.$refs.header.dark
+					this.language = this.$refs.header.language
 				},
 				methods: {
 					go: function(url){
@@ -144,6 +151,10 @@
 					isDark: function (data) {
 						this.dark = data;
 						console.log('dark: ' + data)
+					},
+					isLanguage: function (data) {
+						this.language = data;
+						console.log('language: ' + data)
 					},
 				},
 			})

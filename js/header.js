@@ -3,7 +3,7 @@ Vue.component('hopuc-header', {
 				<header id="header">
 					<div class="fixed">
 					<div class="logo">
-						<a href="/" class="" title="HOPUC">
+						<a href="../index.html" class="" title="HOPUC">
 							<img class="logo-svg" src="img/logo.svg">
 						</a>
 					</div>
@@ -69,7 +69,7 @@ Vue.component('hopuc-header', {
 					}, */
 					{
 						id: "language",
-						name:"英语",
+						name:"English",
 						img:"img/setting.svg",
 						switch: true,
 					}, 
@@ -114,27 +114,27 @@ Vue.component('hopuc-header', {
 		}
 		this.isMobile();
 		document.onkeydown = (e) => {
-			var e = e.which||e.keyCode;
-			// console.log(e);
+			var e = e.which||e.keyCode
+			// console.log(e)
 			if (e == 83) {
-				//e.preventDefault();
-				this.switchSafe();
+				//e.preventDefault()
+				this.switchSafe()
 			}else if(e == 69){
-				this.switchLanguage();
+				this.switchLanguage()
 			}else if(e == 68){
-				this.switchDark();
+				this.switchDark()
 			}
 		}
 		document.addEventListener('click', this.hideMenu, false);
 	},
 	methods: {
 		getParameter: function (name) {
-			var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
-			var r = window.location.search.substr(1).match(reg);
+			var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)")
+			var r = window.location.search.substr(1).match(reg)
 			if (r != null) {
 				return decodeURIComponent(r[2]); //返回参数值  
 			}
-			return null;
+			return null
 		},
 		isMobile:function () {
 			let flag = navigator.userAgent.match(
@@ -143,24 +143,32 @@ Vue.component('hopuc-header', {
 			// return flag;
 			// console.log(flag)
 			if(flag == null || flag.length == 0){
-				this.mobile = false;
+				this.mobile = false
 			}else{
-				this.mobile = true;
+				this.mobile = true
 			}
 		},
 		onSearch: function () {
-			window.location.href = 'search.html?q=' + this.q;
+			window.location.href = 'search.html?q=' + this.q
 		},
 		switchSafe:function (){
-			this.safe?this.safe=false:this.safe=true;
-			localStorage.setItem('safe', this.safe);
-			console.log('safe mode: ',this.safe);
+			this.safe?this.safe=false:this.safe=true
+			localStorage.setItem('safe', this.safe)
+			console.log('safe mode: ',this.safe)
 		},
 		switchLanguage:function (){
-			this.language?this.language=false:this.language=true;
-			localStorage.setItem('language', this.language);
-			console.log('language mode: ',this.language);
-			location.reload();
+			if(this.language){
+				this.language=false
+			}else{
+				this.language=true
+			}
+			localStorage.setItem('language', this.language)
+			this.$emit('switch-language', this.language)
+			console.log('language mode: ',this.language)
+			// this.language?this.language=false:this.language=true
+			// localStorage.setItem('language', this.language)
+			// console.log('language mode: ',this.language)
+			// location.reload();
 		},
 		switchDark:function (){
 			// this.dark?this.dark=false:this.dark=true;
@@ -172,9 +180,9 @@ Vue.component('hopuc-header', {
 				// document.body.style.setProperty('--main-bg-color', '#444');
 				// document.body.className = 'dark';
 			}
-			localStorage.setItem('dark', this.dark);
+			localStorage.setItem('dark', this.dark)
 			this.$emit('switch-dark', this.dark)
-			console.log('dark mode: ',this.dark);
+			console.log('dark mode: ',this.dark)
 		},
 		switchMenu:function(){
 			if(this.menu){
