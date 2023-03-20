@@ -25,7 +25,7 @@
 			<div class="main">
 				
 				<div class="content" id="calculation">
-					<h2 v-html="language?'Calculate Concentration and Fineness':'浓度壶计算矿浆浓细度'"></h2>
+					<h2 v-html="language?'Calculate Concentration and Fineness':'计算浓细度'"></h2>
 					<div class="item-box">
 						<div class="item" v-show="!item.hide" v-for="(item,key) of items">
 							<span class="text" v-html="(!language?item.name:key.replace('_',' ').toUpperCase())+(item.unit?'·'+item.unit:'')"></span>
@@ -33,7 +33,7 @@
 							<input :class="!item.verification?'error ':item.output?'output':''" type="number" v-model.trim.number="item.value" placeholder="" @input="change(key)" @keyup.enter="calculate()">
 						</div>
 					</div>
-					<button class="btn" type="button" @click="calculate()">{{language?'C	alculate':'计算'}}</button>
+					<button class="btn" type="button" @click="calculate()">{{language?'Calculate':'计算'}}</button>
 					<button class="btn" type="button" @click="calculate();save()">{{language?'Save':'保存'}}</button>
 					<!-- <button class="btn" type="button" @click="clear()">清空</button> -->
 				</div>
