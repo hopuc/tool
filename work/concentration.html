@@ -9,7 +9,7 @@
 		<meta http-equiv="Content-Language" content="zh-cn">
 		<meta name="keywords" content="Orep,Tool,OrepTool,选矿,矿物加工工程,在线计算,选矿计算工具,回收率计算,浓细度计算,浓度壶,选矿公式">
 		<meta name="description" content="OrepTool是选矿指标在线计算工具，选矿的必备工具之一，用于矿物加工中常用的公式计算，例如回收率、浓细度、药剂单耗等，可以简单、方便、快速、准确计算出结果。">
-		<title>浓度壶计算矿浆浓细度 - OrepTool</title>
+		<title>计算浓细度 - OrepTool</title>
 		<link rel="icon" href="../img/hopuc-logo2-22050501-final.svg" type="image/svg+xml">
 		<link rel="stylesheet" type="text/css" href="../css/header.css"/>
 		<link rel="stylesheet" type="text/css" href="css/main.css"/>
@@ -63,7 +63,7 @@
 		
 		<!-- <script src="https://cdn.jsdelivr.net/npm/vue@2.6.13/dist/vue.js"></script> -->
 		<!-- <script src="//cdn.staticfile.org/vue/2.7.14/vue.min.js"></script> -->
-		<script src="//cdn.staticfile.org/vue/2.7.14/vue.js"></script>
+		<script src="https://cdn.staticfile.org/vue/2.7.14/vue.js"></script>
 		<script>window.Vue || document.write('<script src="../js/vue.min.js"><\/script>')</script>
 		<script src="../js/header.js"></script>
 		<script src="js/analytics.js"></script>
@@ -299,7 +299,7 @@
 					},
 					update:function(){
 						this.status = 'gray'
-						fetch('//tool.hopuc.com/work/api/concentration.php', {
+						fetch('https://tool.hopuc.com/work/api/concentration.php', {
 							method: 'POST',
 							headers: {
 								'Content-Type': 'application/x-www-form-urlencoded'
