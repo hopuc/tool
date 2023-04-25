@@ -8,12 +8,12 @@ Vue.component('hopuc-header', {
 						</a>
 					</div>
 					<div class="search">
-							<div class="search-bar">
+							<!--<div class="search-bar">
 								<input id="" type="text" v-model="q" @keyup.enter="onSearch">
 								<a class="search-submit" @click="onSearch">
 									<svg t="1588770246625" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="14171" width="26" height="26"><path d="M916.7 875.7L797 756c58.1-71 92.9-161.7 92.9-260.6C890 268 705.6 83.6 478.2 83.6S66.4 268 66.4 495.4s184.4 411.8 411.8 411.8c107.7 0 205.7-41.3 279.1-109l118.4 118.4c5.7 5.7 13.1 8.5 20.5 8.5s14.8-2.8 20.5-8.5c11.3-11.2 11.3-29.6 0-40.9z m-300.8-54.3c-43.6 18.4-89.9 27.8-137.7 27.8s-94.1-9.3-137.7-27.8c-42.1-17.8-80-43.3-112.5-75.8s-58-70.4-75.8-112.5c-18.4-43.6-27.8-89.9-27.8-137.7 0-47.8 9.3-94.1 27.8-137.7 17.8-42.1 43.3-80 75.8-112.5s70.4-58 112.5-75.8c43.6-18.4 89.9-27.8 137.7-27.8s94.1 9.3 137.7 27.8c42.1 17.8 80 43.3 112.5 75.8s58 70.4 75.8 112.5c18.4 43.6 27.8 89.9 27.8 137.7 0 47.8-9.3 94.1-27.8 137.7-17.8 42.1-43.3 80-75.8 112.5-32.6 32.5-70.4 58-112.5 75.8z" p-id="14172"></path></svg>
 								</a>
-							</div>
+							</div>-->
 							
 					</div>
 					<div class="menu" ref="menu" @mouseenter="!mobile?menu=true:''" @mouseleave="!mobile?menu=false:''">
@@ -28,7 +28,7 @@ Vue.component('hopuc-header', {
 								<label v-if="menu.switch" class="menu-switch">
 									<input type="checkbox" :checked="checked(menu.id)" @click="setting(menu.id)">
 									<!-- @click="setting(menu.name)" -->
-									<b class="menu-slider"></b>
+									<i class="menu-slider"></i>
 								</label>
 							</a>
 							
@@ -61,24 +61,31 @@ Vue.component('hopuc-header', {
 						id: "setting",
 						name:"设置",
 						img:"img/setting.svg",
-					},
-					{
-						id: "about",
-						name:"关于",
-						img:"img/setting.svg",
-					}, */
+					},*/
 					{
 						id: "language",
 						name:"English",
 						img:"img/setting.svg",
 						switch: true,
-					}, 
+					},
 					{
 						id: "dark",
 						name:"暗黑模式",
 						img:"img/dark.svg",
 						switch: true,
 					},
+					{
+						id: "about",
+						name:"关于",
+						img:"img/setting.svg",
+						switch: true,
+					}, 
+					/* {
+						id: "update",
+						name:"更新",
+						img:"img/update.svg",
+						switch: false,
+					}, */
 					/* {
 						id: "safe",
 						name:"安全模式",
@@ -184,6 +191,17 @@ Vue.component('hopuc-header', {
 			this.$emit('switch-dark', this.dark)
 			console.log('dark mode: ',this.dark)
 		},
+		switchAbout:function(){
+			if (window.plus) {
+				plusReady();
+			} else {
+				document.addEventListener("plusready", plusReady, false);
+			}
+			function plusReady() {
+				var ws = plus.webview.currentWebview();
+				alert(plus.runtime.version)
+			}
+		},
 		switchMenu:function(){
 			if(this.menu){
 				this.menu=false;
@@ -201,10 +219,12 @@ Vue.component('hopuc-header', {
 		setting:function (e){
 			if(e == 'safe'){
 				this.switchSafe()
-			}else if(e == 'dark'){
-				this.switchDark()
 			}else if(e == 'language'){
 				this.switchLanguage()
+			}else if(e == 'dark'){
+				this.switchDark()
+			}else if(e == 'about'){
+				this.switchAbout()
 			}
 			console.log('setting: ',e)
 		},

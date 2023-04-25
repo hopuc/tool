@@ -1,0 +1,117 @@
+<!DOCtype html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<title>Hello world</title>
+
+	</head>
+	<body οnlοad="whatBrowser()">
+		<table>
+			<form name="Browser">
+				<tr>
+					<td> 浏览器名称: </td>
+					<td> <input type="txt" name="Name" size="110%"></td>
+				</tr>
+				<tr>
+					<td> 版本号:</td>
+					<td> <input type="txt" name="Version" size="110%"></td>
+				</tr>
+				<tr>
+					<td> 代码名称: </td>
+					<td> <input type="txt" name="Code" size="110%"></td>
+				</tr>
+				<tr>
+					<td> 用户代理标识:</td>
+					<td> <input type="txt" name="Agent" size="110%"></td>
+				</tr>
+				<tr>
+					<td> Html5Plus</td>
+					<td> <input type="txt" name="Html5Plus" size="110%"></td>
+				</tr>
+			</form>
+		</table>
+		<script type="text/javascript">
+			// 扩展API是否准备好，如果没有则监听“plusready"事件  
+			if (window.plus) {
+				plusReady();
+			} else {
+				document.addEventListener("plusready", plusReady, false);
+			}
+			// 扩展API准备完成后要执行的操作  
+			function plusReady() {
+				var ws = plus.webview.currentWebview(); //pw回车可输出plus.webview  
+				// ... code  
+				alert(plus.runtime.version)
+			}
+		</script>
+		<script>
+			console.log(navigator)
+
+			document.Browser.Name.value = navigator.appName;
+			document.Browser.Version.value = navigator.appVersion;
+			document.Browser.Code.value = navigator.appCodeName;
+			document.Browser.Agent.value = navigator.userAgent;
+
+			(function() {
+				var script = document.createElement('script');
+				script.src = "http://cdn.jsdelivr.net/npm/eruda@2.4.1/eruda.js";
+				document.body.appendChild(script);
+				script.onload = function() {
+					eruda.init()
+				}
+			})();
+
+			(function() {
+				var script = document.createElement('script');
+				script.src = "http://cdn.jsdelivr.net/npm/vconsole@3.14.2/dist/vconsole.min.js";
+				document.body.appendChild(script);
+				script.onload = function() {
+					var vConsole = new VConsole();
+				}
+			})();
+		</script>
+		<!-- <script>
+			var os = function() {
+				var ua = navigator.userAgent, //获取浏览器UA
+					isWindowsPhone = /(?:Windows Phone)/.test(ua),
+					isSymbian = /(?:SymbianOS)/.test(ua) || isWindowsPhone,
+					isAndroid = /(?:Android)/.test(ua),
+					isFireFox = /(?:Firefox)/.test(ua),
+					isChrome = /(?:Chrome|CriOS)/.test(ua),
+					isTablet = /(?:iPad|PlayBook)/.test(ua) || (isAndroid && !/(?:Mobile)/.test(ua)) || (isFireFox &&
+						/(?:Tablet)/.test(ua)),
+					isPhone = /(?:iPhone)/.test(ua) && !isTablet,
+					isPc = !isPhone && !isAndroid && !isSymbian;
+				return {
+					isTablet: isTablet,
+					isPhone: isPhone,
+					isAndroid: isAndroid,
+					isPc: isPc
+				};
+			}();
+			if (os.isPc) //判断是否PC
+				alert("PC");
+			else if (os.isPhone) //判断是否iPhone
+				alert("Phone");
+			else if (os.isAndroid) //判断是否Android
+				alert("Android");
+			else if (os.isTablet) //判断是否平板
+				alert("Tablet");
+		</script> -->
+		<script>
+			var ua = navigator.userAgent; //获取浏览器UA
+			/* if(ua.includes("Html5Plus")){
+				alert("Html5Plus");
+			}else{
+				alert("e");
+			} */
+			if (/Html5Plus/g.test(ua)) {
+				document.Browser.Html5Plus.value = "Html5Plus";
+				// alert("Html5Plus");
+			} else {
+				// alert("e");
+			}
+		</script>
+	</body>
+</html>
