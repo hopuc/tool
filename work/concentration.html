@@ -77,18 +77,6 @@
 		</script>
 		<script src="../js/header.js"></script>
 		<script src="../js/mask.js"></script>
-		<script src="js/analytics.js"></script>
-		<!-- Google tag (gtag.js) -->
-		<script async src="https://www.googletagmanager.com/gtag/js?id=G-C609DCKXHZ"></script>
-		<script>
-			window.dataLayer = window.dataLayer || [];
-
-			function gtag() {
-				dataLayer.push(arguments);
-			}
-			gtag('js', new Date());
-			gtag('config', 'G-C609DCKXHZ');
-		</script>
 		<script type="text/javascript">
 			var app = new Vue({
 				el: '#app',
@@ -195,7 +183,7 @@
 					dark: false,
 					language: false,
 					mask: false,
-					currentVersion: '',
+					currentVersion: '1.0.4',
 					latestVersion: '',
 					updateUrl: '',
 				},
@@ -203,12 +191,12 @@
 					// 'e.f': function (val, oldVal) { /* ... */ }
 				},
 				created: function() {
-					this.getVersion()
 					this.items.pot_volume.value = localStorage.getItem('pot_volume') || 500;
 					this.items.pot_quantity.value = localStorage.getItem('pot_quantity') || 0;
 				},
 				mounted: function() {
 					this.get()
+					this.getVersion()
 					this.timer = setInterval(this.get, 10000)
 					this.dark = this.$refs.header.dark
 					this.language = this.$refs.header.language
@@ -400,38 +388,43 @@
 					},
 					getVersion: function() {
 						const plusReady = () => {
-							const ws = plus.webview.currentWebview();
-							this.currentVersion = plus.runtime.version
-							console.log(this.currentVersion);
+						    // const ws = plus.webview.currentWebview();
+						    this.currentVersion = plus.runtime.version
+							console.log('currentVersion:',this.currentVersion);
 						};
 						if (window.plus) {
-							plusReady();
+						    plusReady();
 						} else {
-							// this.currentVersion = '1.0.3'
-							document.addEventListener("plusready", plusReady, false);
+						    document.addEventListener("plusready", plusReady, false);
 						}
 						fetch('https://tool.hopuc.com/api/version.php')
 							.then(res => res.json())
 							.then(data => {
 								this.latestVersion = data.version
 								this.updateUrl = data.url
-								console.log(this.latestVersion)
+								console.log('latestVersion:',this.latestVersion)
 							})
 						// const response = await fetch("https://tool.hopuc.com/api/version.php");
 						// const data = await response.json();
 						// this.latestVersion = data.version ?? '0.0.0'
-
-						// console.log(this.latestVersion)
-						// this.mask = !this.mask
-						// this.$emit('switch-mask', this.mask) 
-
-						console.log(this.currentVersion);
+						// console.log(this.currentVersion);
 					},
 				},
 				beforeDestroy() {
 					clearInterval(this.timer)
 				}
 			})
+		</script>
+		<script src="js/analytics.js"></script>
+		<!-- Google tag (gtag.js) -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=G-C609DCKXHZ"></script>
+		<script>
+			window.dataLayer = window.dataLayer || [];
+			function gtag() {
+				dataLayer.push(arguments);
+			}
+			gtag('js', new Date());
+			gtag('config', 'G-C609DCKXHZ');
 		</script>
 	</body>
 </html>

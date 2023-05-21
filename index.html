@@ -116,8 +116,8 @@
 			</div>
 			<!-- <a href="test.html">test</a> -->
 		</div>
-		<script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
-		<!-- <script src="https://cdn.staticfile.org/vue/2.7.14/vue.min.js"></script> -->
+		<!-- <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script> -->
+		<script src="https://cdn.staticfile.org/vue/2.7.14/vue.min.js"></script>
 		<script>
 			window.Vue || document.write('<script src="js/vue.min.js"><\/script>')
 		</script>
@@ -151,7 +151,7 @@
 					dark: false,
 					language: false,
 					mask: false,
-					currentVersion: '',
+					currentVersion: '1.0.4',
 					latestVersion: '',
 					updateUrl: '',
 				},
@@ -164,12 +164,10 @@
 					},
 				}, */
 				created: function() {
+					
+				},
+				mounted: function() {
 					this.getVersion()
-				},
-				mounted: function() {
-					// this.update()
-				},
-				mounted: function() {
 					this.dark = this.$refs.header.dark
 					this.language = this.$refs.header.language
 				},
@@ -191,14 +189,13 @@
 					},
 					getVersion: function() {
 						const plusReady = () => {
-						    const ws = plus.webview.currentWebview();
+						    // const ws = plus.webview.currentWebview();
 						    this.currentVersion = plus.runtime.version
-							console.log(this.currentVersion);
+							console.log('currentVersion:',this.currentVersion);
 						};
 						if (window.plus) {
 						    plusReady();
 						} else {
-							// this.currentVersion = '1.0.3'
 						    document.addEventListener("plusready", plusReady, false);
 						}
 						fetch('https://tool.hopuc.com/api/version.php')
@@ -206,17 +203,12 @@
 							.then(data => {
 								this.latestVersion = data.version
 								this.updateUrl = data.url
-								console.log(this.latestVersion)
+								console.log('latestVersion:',this.latestVersion)
 							})
 						// const response = await fetch("https://tool.hopuc.com/api/version.php");
 						// const data = await response.json();
 						// this.latestVersion = data.version ?? '0.0.0'
-
-						// console.log(this.latestVersion)
-						// this.mask = !this.mask
-						// this.$emit('switch-mask', this.mask) 
-						
-						console.log(this.currentVersion);
+						// console.log(this.currentVersion);
 					},
 				},
 			})

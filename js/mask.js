@@ -22,7 +22,7 @@ Vue.component('hopuc-mask', {
 							<div class="tab-con" id="" v-show="tab=='contact'">
 								<div class="group">
 									<p>官网</p>
-									<a href="https://tool.orep.cn" class="link">https://tool.orep.cn</a>
+									<a href="https://orep.cn" class="link">https://orep.cn</a>
 									<p>电话</p>
 									<a href="tel:+86 18500991101" class="link">+86 18500991101</a>
 									<p>邮箱</p>
@@ -45,7 +45,7 @@ Vue.component('hopuc-mask', {
 			tab: 'about',
 			// currentVersion: '',
 			// latestVersion: '',
-			latestUrl: '',
+			// latestUrl: '',
 			// key:'',
 			/* menu: false,
 			safe: true,
@@ -61,9 +61,9 @@ Vue.component('hopuc-mask', {
 		latestVersion(newValue, oldValue) {
 			this.update('check')
 		},
-		currentVersion(newValue, oldValue) {
+		/* currentVersion(newValue, oldValue) {
 			this.update('check')
-		},
+		}, */
 	},
 	created: function() {
 
@@ -78,11 +78,9 @@ Vue.component('hopuc-mask', {
 			}
 		},
 		update: function(check) {
-
 			function compareVersions(version1, version2) {
 				const v1 = version1.split('.').map(Number);
 				const v2 = version2.split('.').map(Number);
-
 				for (let i = 0; i < v1.length || i < v2.length; i++) {
 					if (v1[i] > (v2[i] || 0)) {
 						return 1; // version1 is greater than version2
@@ -92,7 +90,6 @@ Vue.component('hopuc-mask', {
 				}
 				return 0; // version1 is equal to version2
 			}
-
 			// 获取存储的时间戳
 			const storedTimestamp = localStorage.getItem('timestamp');
 			// 获取当前时间戳
@@ -105,8 +102,15 @@ Vue.component('hopuc-mask', {
 					var r = confirm("有新版本可用，是否更新至最新版本")
 					if (r == true) {
 						let index = Math.floor((Math.random() * this.updateUrl.length))
-						console.log(index)
-						window.open(this.updateUrl[index], '_blank');
+						// console.log(index)
+						// window.open(this.updateUrl[index], '_blank');
+						function downloadFile(url, newName) {
+							var a = document.createElement('a');
+							a.href = url;
+							a.download = newName;
+							a.click();
+						}
+						downloadFile(this.updateUrl[index], `OrepTool${this.latestVersion}.apk`);
 						console.log('Update is download');
 					} else {
 						console.log('Update is cancel');

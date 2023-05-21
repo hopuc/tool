@@ -3,7 +3,7 @@ Vue.component('hopuc-header', {
 				<header id="header">
 					<div class="fixed">
 					<div class="logo">
-						<a href="../index.html" class="" title="HOPUC">
+						<a :href="window.location.pathname.slice(-10)=='index.html'?'./index.html':'../index.html'" class="" title="HOPUC">
 							<img class="logo-svg" src="img/logo.svg">
 						</a>
 					</div>
