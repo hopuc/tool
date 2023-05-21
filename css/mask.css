@@ -1,0 +1,241 @@
+#mask {
+	/* display: none; */
+	position: fixed;
+	top: 0;
+	left: 0;
+	margin: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, .3);
+	z-index: 1001;
+	backdrop-filter: blur(4px);
+	/* filter: blur(1px); */
+}
+
+.icon-close {
+	position: absolute;
+	right: 32px;
+	top: 32px;
+	width: 32px;
+	height: 32px;
+}
+
+.icon-close:before,
+.icon-close:after {
+	position: absolute;
+	left: 15px;
+	content: ' ';
+	height: 32px;
+	width: 1.8px;
+	background-color: #fff;
+}
+
+.icon-close:before {
+	transform: rotate(45deg);
+}
+
+.icon-close:after {
+	transform: rotate(-45deg);
+}
+
+.icon-close:hover::before,
+.icon-close:hover::after {
+	background-color: #77c;
+}
+
+#container {
+	margin: 22vh auto;
+	width: 86vw;
+	/* height: 260px; */
+	/* height: 40vh; */
+	max-width: 500px;
+	background: rgba(255, 255, 255, 1);
+	border-radius: 8px;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, .5);
+}
+
+#tab {
+	display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+	width: 100%;
+	height: 46px;
+	background: #eee;
+	border-bottom: 1px solid #eee;
+	border-radius: 8px 8px 0 0;
+}
+
+#tab a {
+	display: block;
+	color: #555;
+	font-size: 16px;
+	font-weight: 700;
+	width: 50%;
+    height: 100%;
+	/* width: 25%; */
+	/* float: left; */
+	line-height: 46px;
+	text-align: center;
+	list-style: none;
+	cursor: pointer;
+	display: inline-block;
+	user-select: none;	
+}
+
+#tab a:hover {
+	position: relative;
+	color: #77c;
+	/* background: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, .12)); */
+}
+
+#tab a:hover:before {
+    transform: scale(1);
+}
+#tab a:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 2px;
+    width: 100%;
+    background: rgba(155, 155, 155, .7);
+    transform: scale(0);
+    transition: all .4s;
+}
+
+
+#tab .on {
+	color: #77c;
+}
+
+#tab-box {
+	height: calc(100% - 46px);
+	padding: 4px 4vw;
+	position: relative;
+}
+
+.tab-con {
+	height: 100%;
+	/* display: none; */
+}
+
+.group {
+	padding: 16px 0;
+	/* height: calc(100% - 46px); */
+}
+
+.group p {
+	font-size: 14px;
+	font-weight: 700;
+	color: #555;
+	padding: 4px 6px;
+	margin: 4px;
+}
+
+.group a {
+	font-size: 14px;
+	font-weight: 700;
+	color: #77c;
+	padding: 4px 6px;
+	margin: 4px;
+	border-radius: 4px;
+}
+
+.group a:hover {
+	background: #eee;
+}
+
+.group input,
+.group textarea {
+	width: 100%;
+	padding: 6px 6px;
+	border: 1px solid #ccc;
+	border-radius: 3px;
+	font-size: 14px;
+	box-sizing: border-box;
+}
+
+.group input {
+	height: 34px;
+	max-width: 100%;
+}
+
+.group input:focus,
+.group textarea:focus {
+	border: 1px solid #77c;
+}
+
+.group textarea {
+	height: 105px;
+	resize: none;
+}
+
+/*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/
+.group textarea::-webkit-scrollbar {
+	width: 4px;
+	border-radius: 2px;
+	/* background-color: #F5F5F5; */
+}
+
+/*定义滚动条轨道 内阴影+圆角*/
+.group textarea::-webkit-scrollbar-track {
+	border-radius: 2px;
+	background-color: rgba(240, 240, 240, .3);
+}
+
+/*定义滑块 内阴影+圆角*/
+.group textarea::-webkit-scrollbar-thumb {
+	border-radius: 2px;
+	/* box-shadow: inset 0 0 3px rgba(0,0,0,.3); */
+	background-color: #77c;
+}
+
+.ins-submit{
+	display: flex;
+	/* position: absolute; */
+	width: 100%;
+	margin: 6px 0;
+	/* right: 20px; */
+	/* bottom: 20px; */
+	justify-content: space-around;
+}
+
+.button {
+	color: #555;
+	/* background: rgba(100, 100, 100, .2); */
+	background: #fff;
+	/* width: 60px; */
+	height: 30px;
+	border: 1.8px solid #555;
+	box-shadow: 0 0 5px rgba(100, 100, 100, .2);
+	font-size: 15px;
+	font-weight: 700;
+	border-radius: 15px;
+	margin-right: 3px;
+	text-align: center;
+	box-sizing: border-box;
+	vertical-align: top;
+	cursor: pointer;
+	user-select: none;
+}
+
+.button:hover,
+.button:focus {
+	color: #77c;
+	border: 1.8px solid #77c;
+	background: #fff;
+	/* background: rgba(100, 100, 100, .2); */
+	outline: none;
+}
+
+.button:active {
+	color: #fff;
+	border: 1.8px solid #77c;
+	background: #77c;
+    box-shadow: 0 0 0 3px rgba(119, 119, 204, .4);
+}
+
+.button-submit {
+	width: 92px;
+	margin: 0;
+}

@@ -22,7 +22,7 @@ Vue.component('hopuc-header', {
 						</a>
 						
 						<div class="menu-content" v-show="menu">
-							<a class="menu-item" v-for="menu in menus">
+							<a class="menu-item" v-for="menu in menus" @click="setting(menu.id)">
 								<!-- <img :src="menu.img" > -->
 								<span>{{menu.name}}</span>
 								<label v-if="menu.switch" class="menu-switch">
@@ -38,186 +38,139 @@ Vue.component('hopuc-header', {
 					</div>
 				</header>
 				`,
-	data() {
+	data: function() {
 		return {
 			q: '',
-			menus:[
-					/* {
-						id: "user",
-						name:"我的",
-						img:"img/user.svg",
-					},
-					{
-						id: "favorite",
-						name:"收藏",
-						img:"img/favorite.svg",
-					},
-					{
-						id: "history",
-						name:"历史",
-						img:"img/history.svg",
-					},
-					{
-						id: "setting",
-						name:"设置",
-						img:"img/setting.svg",
-					},*/
-					{
-						id: "language",
-						name:"English",
-						img:"img/setting.svg",
-						switch: true,
-					},
-					{
-						id: "dark",
-						name:"暗黑模式",
-						img:"img/dark.svg",
-						switch: true,
-					},
-					{
-						id: "about",
-						name:"关于",
-						img:"img/setting.svg",
-						switch: true,
-					}, 
-					/* {
-						id: "update",
-						name:"更新",
-						img:"img/update.svg",
-						switch: false,
-					}, */
-					/* {
-						id: "safe",
-						name:"安全模式",
-						img:"img/safe.svg",
-						switch: true,
-					}, */
-				],
-				menu: false,
-				safe: true,
-				dark: false,
-				mobile: true,
-				language: false,
+			menus: [
+				/* {
+					id: "user",
+					name:"我的",
+					img:"img/user.svg",
+				},
+				{
+					id: "favorite",
+					name:"收藏",
+					img:"img/favorite.svg",
+				},
+				{
+					id: "history",
+					name:"历史",
+					img:"img/history.svg",
+				},
+				{
+					id: "setting",
+					name:"设置",
+					img:"img/setting.svg",
+				},*/
+				{
+					id: "language",
+					name: "English",
+					img: "img/setting.svg",
+					switch: true,
+				},
+				{
+					id: "dark",
+					name: "暗黑模式",
+					img: "img/dark.svg",
+					switch: true,
+				},
+				{
+					id: "about",
+					name: "关于",
+					img: "img/setting.svg",
+					switch: false,
+				},
+				/* {
+					id: "update",
+					name:"更新",
+					img:"img/update.svg",
+					switch: false,
+				}, */
+				/* {
+					id: "safe",
+					name:"安全模式",
+					img:"img/safe.svg",
+					switch: true,
+				}, */
+			],
+			menu: false,
+			safe: true,
+			dark: false,
+			mobile: true,
+			language: false,
+			mask: false,
+			currentVersion: '',
+			latestVersion: '',
 		}
 	},
-	created:function(){
-		var safe = this.getParameter("safe");
-		var language = this.getParameter("language");
-		var dark = this.getParameter("dark");
-		if(safe == '0'||safe == 'false'||localStorage.getItem('safe') == 'false'){
-		// 	this.safe = true;
-		// }else{
-			this.safe = false;
-		}
-		if(language == '1'||language == 'true'||localStorage.getItem('language') == 'true'){
-			this.language = true;
-		}else{
-			this.language = false;
-		}
-		if(dark == '1'||localStorage.getItem('dark') == 'true'||window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches){
-			this.dark = true;
-		}else{
-			this.dark = false;
-		}
+	created: function() {
+		var safe = Boolean(this.getParameter("safe"));
+		var language = Boolean(this.getParameter("language"));
+		var dark = Boolean(this.getParameter("dark"));
+		this.safe = safe || localStorage.getItem('safe') == 'false';
+		this.language = language || localStorage.getItem('language') == 'true';
+		this.dark = dark || localStorage.getItem('dark') == 'true' || window.matchMedia && window
+			.matchMedia('(prefers-color-scheme: dark)').matches;
 		this.isMobile();
-		document.onkeydown = (e) => {
-			var e = e.which||e.keyCode
-			// console.log(e)
+		document.addEventListener('keydown', (e) => {
+			var e = e.which || e.keyCode;
 			if (e == 83) {
-				//e.preventDefault()
-				this.switchSafe()
-			}else if(e == 69){
-				this.switchLanguage()
-			}else if(e == 68){
-				this.switchDark()
+				this.switchSafe();
+			} else if (e == 69) {
+				this.switchLanguage();
+			} else if (e == 68) {
+				this.switchDark();
 			}
-		}
-		document.addEventListener('click', this.hideMenu, false);
+		});
+		document.addEventListener('click', this.hideMenu);
 	},
 	methods: {
-		getParameter: function (name) {
-			var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)")
-			var r = window.location.search.substr(1).match(reg)
-			if (r != null) {
-				return decodeURIComponent(r[2]); //返回参数值  
-			}
-			return null
+		getParameter: function(name) {
+			var params = new URLSearchParams(window.location.search);
+			return params.get(name);
 		},
-		isMobile:function () {
+		isMobile: function() {
 			let flag = navigator.userAgent.match(
 				/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i
 			);
-			// return flag;
-			// console.log(flag)
-			if(flag == null || flag.length == 0){
-				this.mobile = false
-			}else{
-				this.mobile = true
-			}
+			this.mobile = !!flag?.length;
 		},
-		onSearch: function () {
+		onSearch: function() {
 			window.location.href = 'search.html?q=' + this.q
 		},
-		switchSafe:function (){
-			this.safe?this.safe=false:this.safe=true
+		switchSafe: function() {
+			this.safe ? this.safe = false : this.safe = true
 			localStorage.setItem('safe', this.safe)
-			console.log('safe mode: ',this.safe)
+			console.log('safe mode: ', this.safe)
 		},
-		switchLanguage:function (){
-			if(this.language){
-				this.language=false
-			}else{
-				this.language=true
-			}
+		switchLanguage: function() {
+			this.language = !this.language;
 			localStorage.setItem('language', this.language)
 			this.$emit('switch-language', this.language)
-			console.log('language mode: ',this.language)
-			// this.language?this.language=false:this.language=true
-			// localStorage.setItem('language', this.language)
-			// console.log('language mode: ',this.language)
-			// location.reload();
+			console.log('language mode: ', this.language)
 		},
-		switchDark:function (){
-			// this.dark?this.dark=false:this.dark=true;
-			if(this.dark){
-				this.dark=false;
-				// document.body.style.setProperty('--main-bg-color', '');
-			}else{
-				this.dark=true;
-				// document.body.style.setProperty('--main-bg-color', '#444');
-				// document.body.className = 'dark';
-			}
+		switchDark: function() {
+			this.dark = !this.dark;
 			localStorage.setItem('dark', this.dark)
 			this.$emit('switch-dark', this.dark)
-			console.log('dark mode: ',this.dark)
+			console.log('dark mode: ', this.dark)
 		},
-		switchAbout:function(){
-			if (window.plus) {
-				plusReady();
-			} else {
-				document.addEventListener("plusready", plusReady, false);
-			}
-			function plusReady() {
-				var ws = plus.webview.currentWebview();
-				alert(plus.runtime.version)
-			}
+		switchAbout: function() {
+			this.mask = !this.mask
+			this.$emit('switch-mask', this.mask)
 		},
-		switchMenu:function(){
-			if(this.menu){
-				this.menu=false;
-			}else{
-				this.menu=true;
-			}
+		switchMenu: function() {
+			this.menu = !this.menu;
 		},
-		hideMenu: function (e){
+		hideMenu: function(e) {
 			// console.log(e.target);
 			// console.log(this.$refs.menu.contains(e.target));
 			if (!this.$refs.menu.contains(e.target)) {
-				this.menu=false;
+				this.menu = false;
 			}
 		},
-		setting:function (e){
-			if(e == 'safe'){
+		setting: function(e) {
+			/* if(e == 'safe'){
 				this.switchSafe()
 			}else if(e == 'language'){
 				this.switchLanguage()
@@ -225,19 +178,26 @@ Vue.component('hopuc-header', {
 				this.switchDark()
 			}else if(e == 'about'){
 				this.switchAbout()
-			}
-			console.log('setting: ',e)
+			} */
+			const actions = {
+				'safe': this.switchSafe,
+				'language': this.switchLanguage,
+				'dark': this.switchDark,
+				'about': this.switchAbout
+			};
+			actions[e]?.();
+			console.log('setting: ', e)
 		},
-		checked:function (e){
-			if(e == 'safe'){
-				return this.safe&&this.safe!=='false';
-				console.log('safe mode: ',safe&&safe!=='false');
-			}else if(e == 'language'){
-				return this.language&&this.language!=='false'
-				console.log('language mode: ',this.language);
-			}else if(e == 'dark'){
-				return this.dark&&this.dark!=='false'
-				console.log('dark mode: ',this.dark);
+		checked: function(e) {
+			if (e == 'safe') {
+				return this.safe && this.safe !== 'false';
+				console.log('safe mode: ', safe && safe !== 'false');
+			} else if (e == 'language') {
+				return this.language && this.language !== 'false'
+				console.log('language mode: ', this.language);
+			} else if (e == 'dark') {
+				return this.dark && this.dark !== 'false'
+				console.log('dark mode: ', this.dark);
 			}
 		},
 	}

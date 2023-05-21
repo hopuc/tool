@@ -7,6 +7,41 @@
 
 	</head>
 	<body οnlοad="whatBrowser()">
+		<div id="mask" v-show="mask.show">
+			<div id="container">
+				<!-- <div id="tab">
+					<a :class="mask.tab=='key'?'on':''" @click="change('key')">Key</a>
+					<a :class="mask.tab=='name'?'on':''" @click="change('name')">Name</a>
+				</div>
+				<div id="tab-box">
+					<div class="tab-con" id="tab-key" v-show="mask.tab=='key'">
+						<div class="group">
+							<p>密码</p>
+							<input type="text" v-model="password" class="" id="" value="" />
+						</div>
+						<div class="group">
+							<p>密钥({{key.length}}/32)</p>
+							<input type="text" v-model="key" minlength="32" maxlength="32" class="" id="key"
+								value="" />
+						</div>
+						<div class="ins-submit">
+							<button class="btn btn-submit" id="btn-decrypt" @click="decrypt()">重新加载</button>
+						</div>
+					</div>
+					<div class="tab-con" id="tab-name" v-show="mask.tab=='name'">
+						<div class="group">
+							<p>名称</p>
+							<input type="text" v-model.lazy="name" minlength="1" maxlength="16" class="" id="name"
+								value="" />
+						</div>
+						<div class="ins-submit">
+							<button class="btn btn-submit" id="btn-name" @click="">更改名称</button>
+						</div>
+					</div>
+				</div> -->
+				<a class="icon-close" @click="change('show')"></a>
+			</div>
+		</div>
 		<table>
 			<form name="Browser">
 				<tr>

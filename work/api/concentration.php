@@ -1,6 +1,6 @@
 <?php
 /**
-* Project: Hopuc SMS
+* Project: Hopuc Tool
 * File: concentration.php
 *
 * @link http://hopuc.com
@@ -15,8 +15,6 @@ header('Access-Control-Allow-Origin:*');
 header('Content-Type:application/json;Charset=utf-8');
 
 // $file = 'data/concentration.json';
-
-
 
 $time = date("Y-m-d H:i:s");
 $ip = $_SERVER['REMOTE_ADDR'];

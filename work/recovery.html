@@ -11,6 +11,7 @@
 		<title>计算回收率 - OrepTool</title>
 		<link rel="icon" href="../img/hopuc-logo2-22050501-final.svg" type="image/svg+xml">
 		<link rel="stylesheet" type="text/css" href="../css/header.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/mask.css"/>
 		<link rel="stylesheet" type="text/css" href="css/main.css"/>
 	</head>
 	<body>
@@ -18,8 +19,9 @@
 		<!-- <div id="app" v-cloak> -->
 		<div id="app" :class="dark?'dark':'light'" v-cloak>
 			
-			<hopuc-header @switch-dark="isDark" @switch-language="isLanguage" ref="header"></hopuc-header>
+			<hopuc-header @switch-dark="isDark" @switch-language="isLanguage" @switch-mask="isMask" ref="header"></hopuc-header>
 			<!-- <hopuc-header ref="header"></hopuc-header> -->
+			<hopuc-mask @switch-mask="isMask" :show="mask" :current-version="currentVersion" :latest-version="latestVersion" :update-url="updateUrl" ref="mask"></hopuc-mask>
 			
 			<div class="main">
 				<div class="content" id="calculation">
@@ -61,6 +63,7 @@
 		<script src="https://cdn.staticfile.org/vue/2.7.14/vue.min.js"></script>
 		<script>window.Vue || document.write('<script src="../js/vue.min.js"><\/script>')</script>
 		<script src="../js/header.js"></script>
+		<script src="../js/mask.js"></script>
 		<script src="js/analytics.js"></script>
 		<!-- Google tag (gtag.js) -->
 		<script async src="https://www.googletagmanager.com/gtag/js?id=G-C609DCKXHZ"></script>
@@ -68,7 +71,6 @@
 		  window.dataLayer = window.dataLayer || [];
 		  function gtag(){dataLayer.push(arguments);}
 		  gtag('js', new Date());
-		
 		  gtag('config', 'G-C609DCKXHZ');
 		</script>
 		<script type="text/javascript">
@@ -128,12 +130,16 @@
 					},
 					dark: false,
 					language: false,
+					mask: false,
+					currentVersion: '',
+					latestVersion: '',
+					updateUrl: '',
 				},
 				watch:{
 					// 'e.f': function (val, oldVal) { /* ... */ }
 				},
 				created:function(){
-					
+					this.getVersion()
 				},
 				mounted:function(){
 					this.dark = this.$refs.header.dark
@@ -239,6 +245,39 @@
 					isLanguage: function (data) {
 						this.language = data;
 						console.log('language: ' + data)
+					},
+					isMask: function(data) {
+						this.mask = !this.mask;
+						console.log('mask: ' + data)
+					},
+					getVersion: function() {
+						const plusReady = () => {
+						    const ws = plus.webview.currentWebview();
+						    this.currentVersion = plus.runtime.version
+							console.log(this.currentVersion);
+						};
+						if (window.plus) {
+						    plusReady();
+						} else {
+							// this.currentVersion = '1.0.3'
+						    document.addEventListener("plusready", plusReady, false);
+						}
+						fetch('https://tool.hopuc.com/api/version.php')
+							.then(res => res.json())
+							.then(data => {
+								this.latestVersion = data.version
+								this.updateUrl = data.url
+								console.log(this.latestVersion)
+							})
+						// const response = await fetch("https://tool.hopuc.com/api/version.php");
+						// const data = await response.json();
+						// this.latestVersion = data.version ?? '0.0.0'
+					
+						// console.log(this.latestVersion)
+						// this.mask = !this.mask
+						// this.$emit('switch-mask', this.mask) 
+						
+						console.log(this.currentVersion);
 					},
 				},
 			})
