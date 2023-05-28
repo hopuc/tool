@@ -70,11 +70,10 @@
 
 
 		<!-- <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script> -->
-		<script src="https://cdn.staticfile.org/vue/2.7.14/vue.min.js"></script>
 		<!-- <script src="https://cdn.staticfile.org/vue/2.7.14/vue.js"></script> -->
-		<script>
-			window.Vue || document.write('<script src="../js/vue.min.js"><\/script>')
-		</script>
+		<script src="https://cdn.staticfile.org/vue/2.7.14/vue.min.js"></script>
+		<!-- <script src="../js/vue.min.js"></script> -->
+		<script>window.Vue || document.write('<script src="../js/vue.min.js"><\/script>')</script>
 		<script src="../js/header.js"></script>
 		<script src="../js/mask.js"></script>
 		<script type="text/javascript">
@@ -183,7 +182,7 @@
 					dark: false,
 					language: false,
 					mask: false,
-					currentVersion: '1.0.4',
+					currentVersion: '1.0.5',
 					latestVersion: '',
 					updateUrl: '',
 				},
@@ -191,15 +190,16 @@
 					// 'e.f': function (val, oldVal) { /* ... */ }
 				},
 				created: function() {
-					this.items.pot_volume.value = localStorage.getItem('pot_volume') || 500;
-					this.items.pot_quantity.value = localStorage.getItem('pot_quantity') || 0;
 				},
 				mounted: function() {
-					this.get()
-					this.getVersion()
-					this.timer = setInterval(this.get, 10000)
+					this.items.density.value = localStorage.getItem('density') || 2.37;
+					this.items.pot_volume.value = localStorage.getItem('pot_volume') || 500;
+					this.items.pot_quantity.value = localStorage.getItem('pot_quantity') || 0;
 					this.dark = this.$refs.header.dark
 					this.language = this.$refs.header.language
+					this.timer = setInterval(this.get, 10000)
+					this.get()
+					this.getVersion()
 				},
 				methods: {
 					get: function() {
@@ -289,6 +289,7 @@
 						}
 
 						this.change('calculate');
+						localStorage.setItem('density', this.items.density.value);
 						localStorage.setItem('pot_volume', this.items.pot_volume.value);
 						localStorage.setItem('pot_quantity', this.items.pot_quantity.value);
 					},

@@ -3,7 +3,7 @@ Vue.component('hopuc-header', {
 				<header id="header">
 					<div class="fixed">
 					<div class="logo">
-						<a :href="window.location.pathname.slice(-10)=='index.html'?'./index.html':'../index.html'" class="" title="HOPUC">
+						<a :href="pathname.slice(-10)=='index.html'?'#':'../index.html'" class="" title="HOPUC">
 							<img class="logo-svg" src="img/logo.svg">
 						</a>
 					</div>
@@ -22,7 +22,7 @@ Vue.component('hopuc-header', {
 						</a>
 						
 						<div class="menu-content" v-show="menu">
-							<a class="menu-item" v-for="menu in menus" @click="setting(menu.id)">
+							<a class="menu-item" v-for="menu in menus" v-show="menu.show" @click="setting(menu.id)">
 								<!-- <img :src="menu.img" > -->
 								<span>{{menu.name}}</span>
 								<label v-if="menu.switch" class="menu-switch">
@@ -41,7 +41,7 @@ Vue.component('hopuc-header', {
 	data: function() {
 		return {
 			q: '',
-			menus: [
+			menus: {
 				/* {
 					id: "user",
 					name:"我的",
@@ -62,23 +62,33 @@ Vue.component('hopuc-header', {
 					name:"设置",
 					img:"img/setting.svg",
 				},*/
-				{
-					id: "language",
+				"language":{
+					// id: "language",
 					name: "English",
 					img: "img/setting.svg",
 					switch: true,
+					show: true,
 				},
-				{
+				"dark":{
 					id: "dark",
 					name: "暗黑模式",
 					img: "img/dark.svg",
 					switch: true,
+					show: true,
 				},
-				{
+				"download":{
+					id: "download",
+					name: "APP下载",
+					img: "img/setting.svg",
+					switch: false,
+					show: false,
+				},
+				"about":{
 					id: "about",
 					name: "关于",
 					img: "img/setting.svg",
 					switch: false,
+					show: true,
 				},
 				/* {
 					id: "update",
@@ -92,30 +102,37 @@ Vue.component('hopuc-header', {
 					img:"img/safe.svg",
 					switch: true,
 				}, */
-			],
+			},
 			menu: false,
-			safe: true,
+			// safe: true,
 			dark: false,
 			mobile: true,
 			language: false,
 			mask: false,
 			currentVersion: '',
 			latestVersion: '',
+			app: false,
 		}
 	},
 	created: function() {
-		var safe = Boolean(this.getParameter("safe"));
+		// var safe = Boolean(this.getParameter("safe"));
 		var language = Boolean(this.getParameter("language"));
 		var dark = Boolean(this.getParameter("dark"));
-		this.safe = safe || localStorage.getItem('safe') == 'false';
+		// this.safe = safe || localStorage.getItem('safe') == 'false';
 		this.language = language || localStorage.getItem('language') == 'true';
-		this.dark = dark || localStorage.getItem('dark') == 'true' || window.matchMedia && window
-			.matchMedia('(prefers-color-scheme: dark)').matches;
-		this.isMobile();
+		this.dark = dark || localStorage.getItem('dark') == 'true' || window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+		this.pathname = window.location.pathname
+		// this.isMobile()
+		// 获取UA
+		this.ua = navigator.userAgent; 
+		this.app = /Html5Plus/g.test(this.ua)
+		if(!this.app){
+			this.menus.download.show = true
+		}
 		document.addEventListener('keydown', (e) => {
 			var e = e.which || e.keyCode;
 			if (e == 83) {
-				this.switchSafe();
+				// this.switchSafe();
 			} else if (e == 69) {
 				this.switchLanguage();
 			} else if (e == 68) {
@@ -125,6 +142,10 @@ Vue.component('hopuc-header', {
 		document.addEventListener('click', this.hideMenu);
 	},
 	methods: {
+		go: function(url) {
+			url = url || 'https://orep.cn'
+			window.location.href = url
+		},
 		getParameter: function(name) {
 			var params = new URLSearchParams(window.location.search);
 			return params.get(name);
@@ -183,7 +204,8 @@ Vue.component('hopuc-header', {
 				'safe': this.switchSafe,
 				'language': this.switchLanguage,
 				'dark': this.switchDark,
-				'about': this.switchAbout
+				'about': this.switchAbout,
+				'download':this.go,
 			};
 			actions[e]?.();
 			console.log('setting: ', e)

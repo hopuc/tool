@@ -55,12 +55,11 @@
 					<button class="btn" type="button" @click="clear()">{{language?'Clear':'清空'}}</button>
 				</div>
 			</div>
-			
 		</div>
-		
 		
 		<!-- <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script> -->
 		<script src="https://cdn.staticfile.org/vue/2.7.14/vue.min.js"></script>
+		<!-- <script src="../js/vue.min.js"></script> -->
 		<script>window.Vue || document.write('<script src="../js/vue.min.js"><\/script>')</script>
 		<script src="../js/header.js"></script>
 		<script src="../js/mask.js"></script>
@@ -122,7 +121,7 @@
 					dark: false,
 					language: false,
 					mask: false,
-					currentVersion: '1.0.4',
+					currentVersion: '1.0.5',
 					latestVersion: '',
 					updateUrl: '',
 				},
@@ -133,9 +132,9 @@
 					
 				},
 				mounted:function(){
-					this.getVersion()
 					this.dark = this.$refs.header.dark
 					this.language = this.$refs.header.language
+					this.getVersion()
 				},
 				methods:{
 					calculate:function(){

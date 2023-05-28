@@ -118,20 +118,10 @@
 		</div>
 		<!-- <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script> -->
 		<script src="https://cdn.staticfile.org/vue/2.7.14/vue.min.js"></script>
-		<script>
-			window.Vue || document.write('<script src="js/vue.min.js"><\/script>')
-		</script>
+		<!-- <script src="js/vue.min.js"></script> -->
+		<script>window.Vue || document.write('<script src="js/vue.min.js"><\/script>')</script>
 		<script src="js/header.js"></script>
 		<script src="js/mask.js"></script>
-		<script src="./work/js/analytics.js"></script>
-		<!-- Google tag (gtag.js) -->
-		<script async src="https://www.googletagmanager.com/gtag/js?id=G-C609DCKXHZ"></script>
-		<script>
-		  window.dataLayer = window.dataLayer || [];
-		  function gtag(){dataLayer.push(arguments);}
-		  gtag('js', new Date());
-		  gtag('config', 'G-C609DCKXHZ');
-		</script>
 		<script type="text/javascript">
 			var app = new Vue({
 				el: '#app',
@@ -151,9 +141,11 @@
 					dark: false,
 					language: false,
 					mask: false,
-					currentVersion: '1.0.4',
+					currentVersion: '1.0.5',
 					latestVersion: '',
 					updateUrl: '',
+					ua: '',
+					app: false,
 				},
 				/* watch: {
 					latestVersion(newValue, oldValue) {
@@ -167,9 +159,13 @@
 					
 				},
 				mounted: function() {
-					this.getVersion()
 					this.dark = this.$refs.header.dark
 					this.language = this.$refs.header.language
+					this.analytics()
+					// 获取UA
+					this.ua = navigator.userAgent; 
+					this.app = /Html5Plus/g.test(this.ua)
+					this.getVersion()
 				},
 				methods: {
 					go: function(url) {
@@ -188,15 +184,17 @@
 						console.log('mask: ' + data)
 					},
 					getVersion: function() {
-						const plusReady = () => {
-						    // const ws = plus.webview.currentWebview();
-						    this.currentVersion = plus.runtime.version
-							console.log('currentVersion:',this.currentVersion);
-						};
-						if (window.plus) {
-						    plusReady();
-						} else {
-						    document.addEventListener("plusready", plusReady, false);
+						if(this.app){
+							const plusReady = () => {
+								// const ws = plus.webview.currentWebview();
+								this.currentVersion = plus.runtime.version
+								console.log('currentVersion:',this.currentVersion);
+							};
+							if (window.plus) {
+								plusReady();
+							} else {
+								document.addEventListener("plusready", plusReady, false);
+							}
 						}
 						fetch('https://tool.hopuc.com/api/version.php')
 							.then(res => res.json())
@@ -210,8 +208,24 @@
 						// this.latestVersion = data.version ?? '0.0.0'
 						// console.log(this.currentVersion);
 					},
+					analytics:function(){
+						document.write('<script src="https://www.googletagmanager.com/gtag/js?id=G-C609DCKXHZ"><\/script>')
+						window.dataLayer = window.dataLayer || [];
+						function gtag(){dataLayer.push(arguments);}
+						gtag('js', new Date());
+						gtag('config', 'G-C609DCKXHZ');
+					},
 				},
 			})
 		</script>
+		<!-- <script src="./work/js/analytics.js"></script> -->
+		<!-- Google tag (gtag.js) -->
+		<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-C609DCKXHZ"></script>
+		<script>
+		  window.dataLayer = window.dataLayer || [];
+		  function gtag(){dataLayer.push(arguments);}
+		  gtag('js', new Date());
+		  gtag('config', 'G-C609DCKXHZ');
+		</script> -->
 	</body>
 </html>

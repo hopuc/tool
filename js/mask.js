@@ -41,7 +41,7 @@ Vue.component('hopuc-mask', {
 	props: ['show', 'currentVersion', 'latestVersion', 'updateUrl'],
 	data: function() {
 		return {
-			mask: false,
+			// mask: false,
 			tab: 'about',
 			// currentVersion: '',
 			// latestVersion: '',
@@ -55,9 +55,9 @@ Vue.component('hopuc-mask', {
 		}
 	},
 	watch: {
-		show(newValue, oldValue) {
+		/* show(newValue, oldValue) {
 			this.mask = this.show
-		},
+		}, */
 		latestVersion(newValue, oldValue) {
 			this.update('check')
 		},
