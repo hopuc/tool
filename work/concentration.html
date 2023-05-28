@@ -34,7 +34,7 @@
 					<div class="item-box">
 						<div class="item" v-show="!item.hide" v-for="(item,key) of items">
 							<span class="text"
-								v-html="(!language?item.name:key.replace('_',' ').toUpperCase())+(item.unit?'·'+item.unit:'')"></span>
+								v-html="(!language?item.name:key.replace('_',' ').charAt(0).toUpperCase() + key.replace('_',' ').slice(1))+(item.unit?'·'+item.unit:'')"></span>
 							<!-- <span class="text">{{item.value}}</span> -->
 							<input :class="!item.verification?'error ':item.output?'output':''" type="number"
 								v-model.trim.number="item.value" placeholder="" @input="change(key)"
@@ -52,7 +52,7 @@
 					<div class="record-box">
 						<div class="record" v-show="item.record" v-for="(item,key) of items">
 							<div class="text"
-								v-html="(!language?item.name:key.replace('_',' ').toUpperCase())+(item.unit?'·'+item.unit:'')">
+								v-html="(!language?item.name:key.replace('_',' ').charAt(0).toUpperCase() + key.replace('_',' ').slice(1))+(item.unit?'·'+item.unit:'')">
 							</div>
 							<div class="" :id="'record'+num" v-for="(record,num) of record">
 								<p class="text" :id="key+num">{{record[key]}}</p>

@@ -22,11 +22,11 @@ Vue.component('hopuc-header', {
 						</a>
 						
 						<div class="menu-content" v-show="menu">
-							<a class="menu-item" v-for="menu in menus" v-show="menu.show" @click="setting(menu.id)">
+							<a class="menu-item" v-for="(menu,key) in menus" v-show="menu.show" @click="setting(key)">
 								<!-- <img :src="menu.img" > -->
-								<span>{{menu.name}}</span>
+								<span>{{language?key.charAt(0).toUpperCase()+key.slice(1):menu.name}}</span>
 								<label v-if="menu.switch" class="menu-switch">
-									<input type="checkbox" :checked="checked(menu.id)" @click="setting(menu.id)">
+									<input type="checkbox" :checked="checked(key)" @click="setting(key)">
 									<!-- @click="setting(menu.name)" -->
 									<i class="menu-slider"></i>
 								</label>
@@ -62,7 +62,7 @@ Vue.component('hopuc-header', {
 					name:"设置",
 					img:"img/setting.svg",
 				},*/
-				"language":{
+				"english":{
 					// id: "language",
 					name: "English",
 					img: "img/setting.svg",
@@ -70,21 +70,21 @@ Vue.component('hopuc-header', {
 					show: true,
 				},
 				"dark":{
-					id: "dark",
+					// id: "dark",
 					name: "暗黑模式",
 					img: "img/dark.svg",
 					switch: true,
 					show: true,
 				},
 				"download":{
-					id: "download",
+					// id: "download",
 					name: "APP下载",
 					img: "img/setting.svg",
 					switch: false,
 					show: false,
 				},
 				"about":{
-					id: "about",
+					// id: "about",
 					name: "关于",
 					img: "img/setting.svg",
 					switch: false,
@@ -122,7 +122,7 @@ Vue.component('hopuc-header', {
 		this.language = language || localStorage.getItem('language') == 'true';
 		this.dark = dark || localStorage.getItem('dark') == 'true' || window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
 		this.pathname = window.location.pathname
-		// this.isMobile()
+		this.isMobile()
 		// 获取UA
 		this.ua = navigator.userAgent; 
 		this.app = /Html5Plus/g.test(this.ua)
@@ -202,7 +202,7 @@ Vue.component('hopuc-header', {
 			} */
 			const actions = {
 				'safe': this.switchSafe,
-				'language': this.switchLanguage,
+				'english': this.switchLanguage,
 				'dark': this.switchDark,
 				'about': this.switchAbout,
 				'download':this.go,
@@ -214,7 +214,7 @@ Vue.component('hopuc-header', {
 			if (e == 'safe') {
 				return this.safe && this.safe !== 'false';
 				console.log('safe mode: ', safe && safe !== 'false');
-			} else if (e == 'language') {
+			} else if (e == 'english') {
 				return this.language && this.language !== 'false'
 				console.log('language mode: ', this.language);
 			} else if (e == 'dark') {
