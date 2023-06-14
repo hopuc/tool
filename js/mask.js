@@ -1,5 +1,6 @@
 Vue.component('hopuc-mask', {
-	template: `
+	template: ` 
+	            <transition name="slide-fade" mode="out-in">
 				<div id="mask" v-show="show">
 					<div id="container">
 						<div id="tab">
@@ -26,7 +27,7 @@ Vue.component('hopuc-mask', {
 									<p>电话</p>
 									<a href="tel:+86 18500991101" class="link">+86 18500991101</a>
 									<p>邮箱</p>
-									<a href="mailto:mail@hopuc.com" class="link">mail@hopuc.com</a>
+									<a href="mailto:hopuc@outlook.com" class="link">hopuc@outlook.com</a>
 								</div>
 								<div class="ins-submit">
 									<button class="button button-submit" id="btn-contact" @click="switchMask">确认</button>
@@ -37,6 +38,7 @@ Vue.component('hopuc-mask', {
 						<a class="icon-close" @click="switchMask"></a>
 					</div>
 				</div>
+				</transition>
 				`,
 	props: ['show', 'currentVersion', 'latestVersion', 'updateUrl'],
 	data: function() {
@@ -52,6 +54,7 @@ Vue.component('hopuc-mask', {
 			dark: false,
 			mobile: true,
 			language: false, */
+			app: false,
 		}
 	},
 	watch: {
@@ -66,7 +69,7 @@ Vue.component('hopuc-mask', {
 		}, */
 	},
 	created: function() {
-
+		this.app = /Html5Plus/g.test(this.ua)
 	},
 	methods: {
 		change: function(e) {
@@ -98,7 +101,7 @@ Vue.component('hopuc-mask', {
 			if (check !== 'check' || !storedTimestamp || (currentTimestamp - storedTimestamp > 24 * 60 *
 					60 * 1000)) {
 				// if (this.currentVersion.length > 0 && compareVersions(this.currentVersion, this.latestVersion) < 0) {
-				if (compareVersions(this.currentVersion, this.latestVersion) < 0) {
+				if (this.app && compareVersions(this.currentVersion, this.latestVersion) < 0) {
 					var r = confirm("有新版本可用，是否更新至最新版本")
 					if (r == true) {
 						let index = Math.floor((Math.random() * this.updateUrl.length))

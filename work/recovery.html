@@ -3,6 +3,7 @@
 	<head>
 		<meta charset="utf-8">
 		<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+		<meta http-equiv="Content-Control" content="max-age=86400">
 		<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
 		<meta name="theme-color" content="#77c">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=no">
@@ -28,7 +29,7 @@
 					<h2 v-html="language?'Calculate Recovery':'计算回收率'"></h2>
 					<div class="item-box">
 						<div class="item" v-for="(item,key) of items">
-							<span class="text" v-html="(!language?item.name:key.replace('_',' ').toUpperCase())+(item.unit?'·'+item.unit:'')"></span>
+							<span class="text" v-html="(!language?item.name:key.replace('_',' ').charAt(0).toUpperCase() + key.replace('_',' ').slice(1))+(item.unit?'·'+item.unit:'')"></span>
 							<input :class="!item.verification?'error ':item.output?'output':''" type="number" v-model.trim.number="item.value" placeholder="" @input="change(key)" @keyup.enter="calculate();change('calculate');">
 						</div>
 						<!-- <div class="item">
@@ -57,10 +58,12 @@
 			</div>
 		</div>
 		
-		<!-- <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script> -->
-		<script src="https://cdn.staticfile.org/vue/2.7.14/vue.min.js"></script>
-		<!-- <script src="../js/vue.min.js"></script> -->
+		<!-- <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.min.js"></script> -->
+		<script src="https://unpkg.com/vue@2.7.14/dist/vue.min.js"></script>
+		<!-- <script src="https://cdnjs.loli.net/ajax/libs/vue/2.7.14/vue.min.js"></script> -->
+		<!-- <script src="https://cdn.staticfile.org/vue/2.7.14/vue.min.js"></script> -->
 		<script>window.Vue || document.write('<script src="../js/vue.min.js"><\/script>')</script>
+		<!-- <script src="../js/vue.min.js"></script> -->
 		<script src="../js/header.js"></script>
 		<script src="../js/mask.js"></script>
 		<script type="text/javascript">
@@ -121,7 +124,7 @@
 					dark: false,
 					language: false,
 					mask: false,
-					currentVersion: '1.0.5',
+					currentVersion: '1.0.7',
 					latestVersion: '',
 					updateUrl: '',
 				},
@@ -132,8 +135,8 @@
 					
 				},
 				mounted:function(){
-					this.dark = this.$refs.header.dark
-					this.language = this.$refs.header.language
+					// this.dark = this.$refs.header.dark
+					// this.language = this.$refs.header.language
 					this.getVersion()
 				},
 				methods:{

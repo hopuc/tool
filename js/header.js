@@ -17,23 +17,23 @@ Vue.component('hopuc-header', {
 							
 					</div>
 					<div class="menu" ref="menu" @mouseenter="!mobile?menu=true:''" @mouseleave="!mobile?menu=false:''">
-						<a class="menu-button" @click="switchMenu">
+						<a class="menu-button" @click="menu=!menu">
 							<svg t="1584717078402" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="34162" width="32" height="32"><path d="M417.6896 484.54656c-22.33856 0-48.84992-0.30208-74.752-0.5888-24.69888-0.27648-48.90624-0.55296-68.33664-0.55296a208.42496 208.42496 0 1 1 207.99488-208.42496l0.0512 35.67104c0.08704 44.47744 0.18944 99.84-0.512 138.60352l-0.6144 34.304-34.21696 0.74752c-8.43776 0.16384-18.51392 0.24064-29.61408 0.24064z m-143.10912-346.624a137.06752 137.06752 0 0 0 0 274.12992c19.6608 0 44.14976 0.27648 69.12 0.55296 23.30624 0.26112 47.104 0.512 67.63008 0.57856 0.22016-32.768 0.14848-70.41536 0.08704-102.4l-0.0512-35.80928a137.088 137.088 0 0 0-136.79104-137.05728z m321.50016 346.624c-11.1104 0-21.18144-0.0768-29.63456-0.256l-34.21696-0.74752-0.60928-34.304c-0.6912-38.74816-0.58368-94.06976-0.512-138.5216l0.04608-35.74784a208.02048 208.02048 0 1 1 208.01536 208.42496c-19.456 0-43.63264 0.27136-68.3264 0.55296-25.91744 0.29696-52.43392 0.59904-74.76736 0.59904z m143.104-346.624a137.08288 137.08288 0 0 0-136.79104 137.0624l-0.0512 35.88608c-0.06144 31.9488-0.13824 69.5552 0.08704 102.31296 20.52608-0.04608 44.31872-0.31744 67.62496-0.57856 24.99072-0.2816 49.47456-0.55296 69.12-0.55296a137.0624 137.0624 0 0 0 0.00512-274.13504zM274.57536 952.32a208.42496 208.42496 0 0 1 0-416.8448c19.456 0 43.63776-0.27648 68.33664-0.55296 38.80448-0.43008 78.94528-0.87552 104.40192-0.3328l34.21696 0.75264 0.6144 34.304c0.6912 38.77376 0.5888 94.12608 0.512 138.60352l-0.0512 35.67104A208.45568 208.45568 0 0 1 274.57536 952.32z m136.76032-346.624c-20.52608 0.04608-44.31872 0.31744-67.62496 0.57856-24.9856 0.27648-49.46944 0.55296-69.12 0.55296a137.06752 137.06752 0 1 0 136.80128 137.06752l0.0512-35.80928c0.04608-31.96928 0.11776-69.62176-0.10752-102.38976z m327.84384 346.624a208.45568 208.45568 0 0 1-208.01536-208.41984l-0.04608-35.74784c-0.08704-44.45184-0.19456-99.77856 0.512-138.5216l0.60928-34.304 34.21696-0.75264c25.46176-0.54272 65.59232-0.09728 104.41216 0.3328 24.69376 0.27648 48.896 0.55296 68.3264 0.55296a208.42496 208.42496 0 0 1-0.01536 416.86016z m-136.7552-346.624c-0.22528 32.768-0.14848 70.36416-0.08704 102.31296l0.0512 35.88608a136.79616 136.79616 0 1 0 136.79104-137.06752c-19.65568 0-44.13952-0.27648-69.12-0.55296-23.31648-0.256-47.10912-0.52736-67.6352-0.57856z" fill="#77c" p-id="34164"></path></svg>
 						</a>
 						
+						<transition name="slide-fade" mode="out-in">
 						<div class="menu-content" v-show="menu">
 							<a class="menu-item" v-for="(menu,key) in menus" v-show="menu.show" @click="setting(key)">
 								<!-- <img :src="menu.img" > -->
-								<span>{{language?key.charAt(0).toUpperCase()+key.slice(1):menu.name}}</span>
+								<span>{{menus.language.status?key.charAt(0).toUpperCase()+key.slice(1):menu.name}}</span>
 								<label v-if="menu.switch" class="menu-switch">
-									<input type="checkbox" :checked="checked(key)" @click="setting(key)">
+									<input type="checkbox" :checked="menus[key].status" @click="setting(key)">
 									<!-- @click="setting(menu.name)" -->
 									<i class="menu-slider"></i>
 								</label>
 							</a>
-							
 						</div>
-						
+						</transition>
 					</div>
 					</div>
 				</header>
@@ -62,12 +62,13 @@ Vue.component('hopuc-header', {
 					name:"设置",
 					img:"img/setting.svg",
 				},*/
-				"english":{
+				"language":{
 					// id: "language",
 					name: "English",
 					img: "img/setting.svg",
 					switch: true,
 					show: true,
+					status: false,
 				},
 				"dark":{
 					// id: "dark",
@@ -75,6 +76,7 @@ Vue.component('hopuc-header', {
 					img: "img/dark.svg",
 					switch: true,
 					show: true,
+					status: false,
 				},
 				"download":{
 					// id: "download",
@@ -82,6 +84,7 @@ Vue.component('hopuc-header', {
 					img: "img/setting.svg",
 					switch: false,
 					show: false,
+					// status: true,
 				},
 				"about":{
 					// id: "about",
@@ -89,6 +92,7 @@ Vue.component('hopuc-header', {
 					img: "img/setting.svg",
 					switch: false,
 					show: true,
+					// status: true,
 				},
 				/* {
 					id: "update",
@@ -105,30 +109,30 @@ Vue.component('hopuc-header', {
 			},
 			menu: false,
 			// safe: true,
-			dark: false,
+			// dark: false,
+			// language: false,
 			mobile: true,
-			language: false,
 			mask: false,
 			currentVersion: '',
 			latestVersion: '',
+			ua: '',
 			app: false,
 		}
 	},
 	created: function() {
-		// var safe = Boolean(this.getParameter("safe"));
-		var language = Boolean(this.getParameter("language"));
-		var dark = Boolean(this.getParameter("dark"));
-		// this.safe = safe || localStorage.getItem('safe') == 'false';
-		this.language = language || localStorage.getItem('language') == 'true';
-		this.dark = dark || localStorage.getItem('dark') == 'true' || window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+		// this.safe = Boolean(this.getParameter("safe")) || localStorage.getItem('safe') == 'false';
+		this.menus.language.status = Boolean(this.getParameter("language")) || localStorage.getItem('language') == 'true';
+		this.menus.dark.status = Boolean(this.getParameter("dark")) || localStorage.getItem('dark') == 'true' || window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+		this.$emit('switch-language', this.menus.language.status)
+		this.$emit('switch-dark', this.menus.dark.status)
+		
 		this.pathname = window.location.pathname
 		this.isMobile()
 		// 获取UA
 		this.ua = navigator.userAgent; 
 		this.app = /Html5Plus/g.test(this.ua)
-		if(!this.app){
-			this.menus.download.show = true
-		}
+		// console.log(this.app)
+		this.menus.download.show = !this.app
 		document.addEventListener('keydown', (e) => {
 			var e = e.which || e.keyCode;
 			if (e == 83) {
@@ -140,6 +144,9 @@ Vue.component('hopuc-header', {
 			}
 		});
 		document.addEventListener('click', this.hideMenu);
+	},
+	mounted: function() {
+		
 	},
 	methods: {
 		go: function(url) {
@@ -159,12 +166,12 @@ Vue.component('hopuc-header', {
 		onSearch: function() {
 			window.location.href = 'search.html?q=' + this.q
 		},
-		switchSafe: function() {
+		/* switchSafe: function() {
 			this.safe ? this.safe = false : this.safe = true
 			localStorage.setItem('safe', this.safe)
 			console.log('safe mode: ', this.safe)
-		},
-		switchLanguage: function() {
+		}, */
+		/* switchLanguage: function() {
 			this.language = !this.language;
 			localStorage.setItem('language', this.language)
 			this.$emit('switch-language', this.language)
@@ -175,14 +182,14 @@ Vue.component('hopuc-header', {
 			localStorage.setItem('dark', this.dark)
 			this.$emit('switch-dark', this.dark)
 			console.log('dark mode: ', this.dark)
-		},
+		}, */
 		switchAbout: function() {
 			this.mask = !this.mask
 			this.$emit('switch-mask', this.mask)
 		},
-		switchMenu: function() {
+		/* switchMenu: function() {
 			this.menu = !this.menu;
-		},
+		}, */
 		hideMenu: function(e) {
 			// console.log(e.target);
 			// console.log(this.$refs.menu.contains(e.target));
@@ -191,6 +198,9 @@ Vue.component('hopuc-header', {
 			}
 		},
 		setting: function(e) {
+			this.menus[e].status = !this.menus[e].status
+			localStorage.setItem(e, this.menus[e].status)
+			this.$emit('switch-'+e, this.menus[e].status)
 			/* if(e == 'safe'){
 				this.switchSafe()
 			}else if(e == 'language'){
@@ -201,9 +211,9 @@ Vue.component('hopuc-header', {
 				this.switchAbout()
 			} */
 			const actions = {
-				'safe': this.switchSafe,
-				'english': this.switchLanguage,
-				'dark': this.switchDark,
+				// 'safe': this.switchSafe,
+				// 'english': this.switchLanguage,
+				// 'dark': this.switchDark,
 				'about': this.switchAbout,
 				'download':this.go,
 			};
@@ -211,7 +221,8 @@ Vue.component('hopuc-header', {
 			console.log('setting: ', e)
 		},
 		checked: function(e) {
-			if (e == 'safe') {
+			return this[e] && this[e] !== 'false'
+			/*if (e == 'safe') {
 				return this.safe && this.safe !== 'false';
 				console.log('safe mode: ', safe && safe !== 'false');
 			} else if (e == 'english') {
@@ -220,7 +231,8 @@ Vue.component('hopuc-header', {
 			} else if (e == 'dark') {
 				return this.dark && this.dark !== 'false'
 				console.log('dark mode: ', this.dark);
-			}
+			}*/
+			
 		},
 	}
 })
