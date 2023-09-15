@@ -111,7 +111,7 @@
 							// value: 3.36,
 							value: 2.37,
 							decimal: 2,
-							unit: "g/cm<sup>3</sup>",
+							unit: "g/cm³",
 							sort: 0,
 							record: false,
 						},
@@ -156,6 +156,16 @@
 							sort: 0,
 							record: false,
 						},
+						flow_rate: {
+							name: '流量',
+							verification: true,
+							output: null,
+							value: null,
+							decimal: 3,
+							unit: "m³/h",
+							sort: 0,
+							record: false,
+						},
 						concentration: {
 							name: '浓度',
 							verification: true,
@@ -173,6 +183,26 @@
 							value: null,
 							decimal: 2,
 							unit: "%",
+							sort: 4,
+							record: true,
+						},
+						slag_quantity: {
+							name: '渣量',
+							verification: true,
+							output: null,
+							value: null,
+							decimal: 2,
+							unit: "kg/h",
+							sort: 4,
+							record: true,
+						},
+						liquid_quantity: {
+							name: '液量',
+							verification: true,
+							output: null,
+							value: null,
+							decimal: 2,
+							unit: "kg/h",
 							sort: 4,
 							record: true,
 						},
@@ -220,12 +250,16 @@
 								console.log('Get error:' + err)
 							})
 					},
-					/* calculate:function(){
+					calculate:function(){
+						
 						let density = this.items.density.value
 						let pot_volume = this.items.pot_volume.value
 						let pot_quantity = this.items.pot_quantity.value
 						let pulp_quantity = this.items.pulp_quantity.value
 						let sand_quantity = this.items.sand_quantity.value
+						let flow_rate = this.items.flow_rate.value
+						
+						// const { density, pot_volume, pot_quantity, pulp_quantity, sand_quantity, flow_rate } = this.items;
 						
 						
 						if(!!density && !!pot_volume && !!pulp_quantity){
@@ -244,15 +278,29 @@
 									this.items.fineness.output = true
 								}
 							}
+							
+							if(!!flow_rate){
+								let slag_quantity = (0.01*(pulp_quantity-pot_quantity)*flow_rate*(this.items.concentration.value)/pot_volume).toFixed(this.items.slag_quantity.decimal)
+								let liquid_quantity = (0.01*(pulp_quantity-pot_quantity)*flow_rate*(100-this.items.concentration.value)/pot_volume).toFixed(this.items.liquid_quantity.decimal)
+								// liquid_quantity = ((1-this.items.concentration.value)*(slag_quantity/this.items.concentration.value)).toFixed(this.items.liquid_quantity.decimal)
+								if(slag_quantity>0){
+									this.items.slag_quantity.value = slag_quantity
+									this.items.slag_quantity.output = true
+								}
+								if(liquid_quantity>0){
+									this.items.liquid_quantity.value = liquid_quantity
+									this.items.liquid_quantity.output = true
+								}
+							}
+							
 							this.date()
 							this.time()
 						}else{
 							console.log('error:Please enter the value!')
 						}
 						this.change('calculate')
-					}, */
-					calculate: function() {
-						const items = this.items;
+						
+						/* const items = this.items;
 						const density = items.density.value;
 						const pot_volume = items.pot_volume.value;
 						const pot_quantity = items.pot_quantity.value;
@@ -289,7 +337,8 @@
 							console.log('error:Please enter the value!');
 						}
 
-						this.change('calculate');
+						this.change('calculate'); */
+						
 						localStorage.setItem('density', this.items.density.value);
 						localStorage.setItem('pot_volume', this.items.pot_volume.value);
 						localStorage.setItem('pot_quantity', this.items.pot_quantity.value);

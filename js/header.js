@@ -121,8 +121,8 @@ Vue.component('hopuc-header', {
 	},
 	created: function() {
 		// this.safe = Boolean(this.getParameter("safe")) || localStorage.getItem('safe') == 'false';
-		this.menus.language.status = Boolean(this.getParameter("language")) || localStorage.getItem('language') == 'true';
-		this.menus.dark.status = Boolean(this.getParameter("dark")) || localStorage.getItem('dark') == 'true' || window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+		this.menus.language.status = this.getParameter("language") == 'true' || localStorage.getItem('language') == 'true';
+		this.menus.dark.status = this.getParameter("dark") == 'true' || localStorage.getItem('dark') == 'true' || window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
 		this.$emit('switch-language', this.menus.language.status)
 		this.$emit('switch-dark', this.menus.dark.status)
 		
